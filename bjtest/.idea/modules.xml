@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/bjtest.iml" filepath="$PROJECT_DIR$/bjtest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BioJavaTest.iml" filepath="$PROJECT_DIR$/BioJavaTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bjtest/bjtest.iml" filepath="$PROJECT_DIR$/bjtest/bjtest.iml" />
     </modules>
   </component>
 </project>

@@ -22,8 +22,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="BioJavaTest" />
-        <module name="bjtest" />
+        <module name="TAR" />
       </profile>
     </annotationProcessing>
   </component>

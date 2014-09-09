@@ -20,7 +20,12 @@ public class Fasta {
 
 
     public void read (String filename) {
-        LinkedHashMap<String, ProteinSequence> a = FastaReaderHelper.readFastaProteinSequence(new File(filename));
+        LinkedHashMap<String, ProteinSequence> a = null;
+        try {
+            a = FastaReaderHelper.readFastaProteinSequence(new File(filename));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //FastaReaderHelper.readFastaDNASequence for DNA sequences
 
         for (  Entry<String, ProteinSequence> entry : a.entrySet() ) {
