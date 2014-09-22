@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.*;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
@@ -27,13 +28,32 @@ public class Fasta {
         LinkedHashMap<String, ProteinSequence> a = FastaReaderHelper.readFastaProteinSequence(new File(filename));
         //FastaReaderHelper.readFastaDNASequence for DNA sequences
 
+        FileWriter writeFile = null;
+        try {
+            File logFile = new File("error.txt");
+            writeFile = new FileWriter(logFile);
+            for (  Entry<String, ProteinSequence> entry : a.entrySet() ) {
+                writeFile.write( entry.getValue().getOriginalHeader() + "=" + entry.getValue().getSequenceAsString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(writeFile != null) {
+                try {
+                    writeFile.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+/*
         for (  Entry<String, ProteinSequence> entry : a.entrySet() ) {
             System.out.println( entry.getValue().getOriginalHeader() + "=" + entry.getValue().getSequenceAsString() );
         }
-
+*/
 		/*
 		 * Method 2: With the FastaReader Object
-		 */
+
         //Try reading with the FastaReader
         FileInputStream inStream = new FileInputStream( filename );
         FastaReader<ProteinSequence,AminoAcidCompound> fastaReader =
@@ -45,6 +65,8 @@ public class Fasta {
         for (  Entry<String, ProteinSequence> entry : b.entrySet() ) {
             System.out.println( entry.getValue().getOriginalHeader() + "=" + entry.getValue().getSequenceAsString() );
         }
+        */
+
     }
 
 }
