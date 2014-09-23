@@ -20,13 +20,15 @@ import org.biojava3.core.sequence.io.ProteinSequenceCreator;
 
 public class Fasta {
 
-    public void read (String filename) throws Exception {
+    public void read (String filename, String typeOfReading) throws Exception {
         /*
 		 * Method 1: With the FastaReaderHelper
 		 */
         //Try with the FastaReaderHelper
         LinkedHashMap<String, ProteinSequence> a = FastaReaderHelper.readFastaProteinSequence(new File(filename));
         //FastaReaderHelper.readFastaDNASequence for DNA sequences
+
+        NucleicSequence
 
         FileWriter writeFile = null;
         try {
