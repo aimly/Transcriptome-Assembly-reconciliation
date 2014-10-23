@@ -63,7 +63,10 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 
 	*/			
 				SimilarityMatrix[i][j] = aligner.getSimilarity();
+				if (j%50 == 0)
+					System.out.println("i = " + i + "j = " + j);
 				j++;
+				
 			}
 			i++;
 		}

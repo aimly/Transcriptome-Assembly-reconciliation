@@ -13,5 +13,8 @@ public class SimilarityMatrix {
 			NWSimilarity nw = new NWSimilarity();
 			sim = nw.computeSimilarity(tr1, tr2);
 		}
+		else {
+			System.out.println("Unknown method");
+		}
 	}
 }

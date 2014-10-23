@@ -8,12 +8,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.HashBiMap;
+
 
 public class Transcriptome {
 
-    protected HashMap<String,String> transcripts;
+    protected HashBiMap<String,String> transcripts;
     
-    public Transcriptome (HashMap<String, String> setOfTr) throws IOException {
+    public Transcriptome (HashBiMap<String, String> setOfTr) throws IOException {
     	this.transcripts = setOfTr;
     }
 	

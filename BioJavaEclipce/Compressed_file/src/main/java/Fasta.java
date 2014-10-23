@@ -20,10 +20,10 @@ import com.google.common.collect.HashBiMap;
 
 public class Fasta {
 
-    protected HashMap<String, String> read (String filename, String fileformat) throws Exception {
+    protected HashBiMap<String, String> read (String filename, String fileformat) throws Exception {
         
 
-    	HashMap<String, String> set = new HashMap<String, String>();
+    	HashBiMap<String, String> set = HashBiMap.create();
     	if (fileformat == "fasta") {
 	        FileInputStream inStream = new FileInputStream( filename );
 	        FastaReader<ProteinSequence,AminoAcidCompound> fastaReader =

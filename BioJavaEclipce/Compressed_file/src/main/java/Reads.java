@@ -2,15 +2,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.HashBiMap;
+
 /**
  * Created by volta on 09.09.14.
  */
 
 
 public class Reads  {
-	protected HashMap<String, String> reads;
+	protected HashBiMap<String, String> reads;
 	
-	public Reads (HashMap<String, String> setOfTr) throws IOException {
+	public Reads (HashBiMap<String, String> setOfTr) throws IOException {
     	
 		this.reads = setOfTr;
     	

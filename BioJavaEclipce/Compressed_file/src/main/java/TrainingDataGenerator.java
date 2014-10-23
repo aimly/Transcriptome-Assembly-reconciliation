@@ -1,5 +1,10 @@
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Scanner;
 
 public class TrainingDataGenerator {
 
@@ -10,19 +15,25 @@ public class TrainingDataGenerator {
 		Fasta gg = new Fasta();
 		
 		HashSet <NucleicSequence> gg2 = new HashSet<NucleicSequence>();
-        try {
-            Transcriptome tr = new Transcriptome(gg.read("/home/volta/another/diploma/bowtie/Oases.fa", "fasta"));
-            Transcriptome tr2 = new Transcriptome(gg.read("/home/volta/another/diploma/bowtie/Trinity.fa", "fasta"));
+        try {/*
+            Transcriptome tr1 = 
+            		new Transcriptome(gg.read("/home/volta/another/diploma/bowtie/Trinity.fa", "fasta"));
+            Transcriptome tr2 = new Transcriptome(gg.read("/home/volta/another/diploma/bowtie/Oases1.fa", "fasta"));
             
-            Reads rd = new Reads (gg.read("/home/volta/another/diploma/ag_1_GGCTAC_filtered.fq", "fastq"));
+//            Reads rd = new Reads (gg.read("/home/volta/another/diploma/bowtie/test/rd.fq", "fastq"));
             //rd.print();
 //            TranscriptomeAssembly links = ReadsMapper.map(rd, tr, "/home/volta/another/diploma/bowtie/results_trinity.sam");
             NWSimilarity sim = new NWSimilarity();
-            double[][] s1 = sim.computeSimilarity(tr, tr2);
-            
-            
-            
-            
+            SimilarityMatrix simMat = new SimilarityMatrix(tr1, tr2, "NW");
+            Assignment as = new Assignment(simMat);
+            as.print();*/
+          
+        	
+        	String[] dep = new Scanner(new File("/home/volta/another/diploma/bowtie/results_trinity.sam")).useDelimiter("\\Z").next().split(System.lineSeparator());
+        	dep = Arrays.sort(dep.);
+        	String[] reads = new Scanner(new File("/home/volta/another/diploma/ag_1_GGCTAC_filtered.fq")).useDelimiter("\\Z").next().split(System.lineSeparator());
+        	System.out.println(dep[28]);
+        	System.out.println(reads[28]);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e.toString());
