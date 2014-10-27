@@ -1,3 +1,10 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -19,8 +26,13 @@ import org.biojava3.core.sequence.compound.NucleotideCompound;
 
 class NWSimilarity implements TranscriptSimilarityComputer {
 
-	public double[][] computeSimilarity(Transcriptome firstSet, 
-			Transcriptome secondSet) {
+	public double[][] computeSimilarity(Transcriptome firstSetOfTr, 
+			Transcriptome secondSetOfTr) throws IOException {
+		
+		Transcriptome firstSet, secondSet;
+		firstSet = firstSetOfTr;
+		secondSet = secondSetOfTr;
+	
 		
 		SubstitutionMatrix<NucleotideCompound> matrix = SubstitutionMatrixHelper.getNuc4_4();
 		SimpleGapPenalty gap = new SimpleGapPenalty();
@@ -31,6 +43,36 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 		
 		double[][] SimilarityMatrix = new double[firstSet.getAllSeq().size()]
 				[secondSet.getAllSeq().size()];
+		
+		File file = new File(firstSet.getNameOfSet() + 
+				"+" + secondSet.getNameOfSet() + " " + "Similarity");
+		
+		if (file.exists()){
+			
+			FileInputStream fis = new FileInputStream(firstSet.getNameOfSet() + 
+					"+" + secondSet.getNameOfSet() + " " + "Similarity");
+			ObjectInputStream in = new ObjectInputStream(fis);
+			double[][] readObject;
+			try {
+				readObject = (double[][]) in.readObject();
+				SimilarityMatrix = readObject;
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			in.close();
+			
+			
+			
+			System.out.println("Red!");
+			in.close();
+			return SimilarityMatrix;
+		} 
+		
+		
+		
+		
 		Iterator<String> i1 = firstSet.getAllSeq().iterator();
 		int i = 0, j = 0;
 		
@@ -70,6 +112,13 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 			}
 			i++;
 		}
+		
+		FileOutputStream fos = new FileOutputStream(firstSet.getNameOfSet() + 
+				"+" + secondSet.getNameOfSet() + " " + "Similarity");
+		ObjectOutputStream out = new ObjectOutputStream(fos);
+		out.writeObject(SimilarityMatrix);
+		out.flush();
+		out.close();
 		
 		return SimilarityMatrix;
 	}

@@ -8,9 +8,9 @@ import java.io.IOException;
 
 public class NucleicSequence {
 
-    protected byte[] data;
+	private byte[] data;
 
-    protected byte[] name;
+	private byte[] name;
 
     public NucleicSequence (String var1, String var2) {
         this.name = var1.getBytes();
@@ -42,7 +42,7 @@ public class NucleicSequence {
 		String s1 = new String(this.name);
 		String s2 = new String(this.data);
 		System.out.println("Name : " + s1);
-		System.out.println(s2 + "\n");
+		System.out.println(s2);
 	}
 
     @Override

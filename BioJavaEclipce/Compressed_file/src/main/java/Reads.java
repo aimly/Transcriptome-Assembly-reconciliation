@@ -10,9 +10,9 @@ import com.google.common.collect.HashBiMap;
 
 
 public class Reads  {
-	protected HashBiMap<String, String> reads;
+	private HashMap<String, String> reads;
 	
-	public Reads (HashBiMap<String, String> setOfTr) throws IOException {
+	public Reads (HashMap<String, String> setOfTr) throws IOException {
     	
 		this.reads = setOfTr;
     	
@@ -28,14 +28,14 @@ public class Reads  {
 		
 		for (Map.Entry<String,String> item : reads.entrySet()){
 			System.out.println("Read №" + i);
-			Read rd = new Read (item.getKey(), item.getValue());
+			Read rd = new Read (item.getValue(), item.getKey());
 			rd.print();
 			i++;
 		}
 	}
 	
-	public String getSeq (String name){
-		return reads.get(name);
+	public String getName (String seq){
+		return reads.get(seq);
 	}
 
 }

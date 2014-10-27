@@ -12,11 +12,14 @@ import com.google.common.collect.HashBiMap;
 
 
 public class Transcriptome {
-
-    protected HashBiMap<String,String> transcripts;
+	
+	private String nameOfSet;
+	private HashMap<String,String> transcripts;
     
-    public Transcriptome (HashBiMap<String, String> setOfTr) throws IOException {
+    
+    public Transcriptome (HashMap<String, String> setOfTr, String nameOfSet) throws IOException {
     	this.transcripts = setOfTr;
+    	this.nameOfSet = nameOfSet;
     }
 	
 	public Transcript getTranscript (String transcriptName) {
@@ -29,20 +32,22 @@ public class Transcriptome {
 		
 		for (Map.Entry<String,String> item : transcripts.entrySet()){
 			System.out.println("Transcript №" + i);
-			Transcript tr = new Transcript (item.getKey(), item.getValue());
+			Transcript tr = new Transcript (item.getValue(), item.getKey());
 			tr.print();
 			i++;
 		}
 	}
 	
-	public String getSeq (String name){
-		return transcripts.get(name);
+	public String getName (String seq){
+		return transcripts.get(seq);
 	}
 	
 	public Collection<String> getAllSeq(){
-		return transcripts.values();
+		return transcripts.keySet();
 	}
 	
-	
+	public String getNameOfSet () {
+		return this.nameOfSet;
+	}
     
 }

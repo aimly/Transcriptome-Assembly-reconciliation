@@ -1,28 +1,79 @@
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import com.google.common.collect.BiMap;
 
 
 public class AssignmentSolver {
 	
-	public static HashMap<TranscriptPair, Double> solve (SimilarityMatrix matrix){
+	public static HashMap<TranscriptPair, Double> solve (SimilarityMatrix matrix) throws IOException{
+		
+		double[][] sim = matrix.getMatrix();
+		Transcriptome tr1 = matrix.getFirstTranscriptome();
+		Transcriptome tr2 = matrix.getSecondTranscriptome();
+		
+		File file = new File(tr1.getNameOfSet() + 
+				"+" + tr2.getNameOfSet() + " " + "Assignment problem");
+		
+		double[][] reverseMatrix = new double[sim.length]
+				[sim[0].length];
+		
+		for (int t = 0; t < reverseMatrix.length; t++)
+			for (int l = 0; l < reverseMatrix[0].length; l++){
+				reverseMatrix[t][l] = -sim[t][l];
+			}
+		
+		
+		
+		int[] solution = new int[sim.length];
+		
+		if (file.exists()){
+			
+			FileInputStream fis = new FileInputStream(tr1.getNameOfSet() + 
+					"+" + tr2.getNameOfSet() + " " + "Assignment problem");
+			ObjectInputStream in = new ObjectInputStream(fis);
+			int[] readObject;
+			try {
+				readObject = (int[]) in.readObject();
+				solution = readObject;
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			in.close();
+			
+			
+			
+			System.out.println("Red!");
+			in.close();
+		} else {
+			HungarianAlgorithm solver = new HungarianAlgorithm(reverseMatrix);
+			solution = solver.execute();
+		}
+		for (int k = 0; k<solution.length; k++)
+			System.out.println(solution[k]);
 		
 		HashMap<TranscriptPair, Double> compliances = 
 				new HashMap<TranscriptPair, Double>();
 		
-		HungarianAlgorithm solver = new HungarianAlgorithm(matrix.sim);
-		int[] solution = solver.execute();
 		
-		BiMap<String, String> nameToStr1 = matrix.tr1.transcripts.inverse();
-		BiMap<String, String> nameToStr2 = matrix.tr2.transcripts.inverse();
+				
+		String[] arr1 = new String[tr1.getAllSeq().size()];
+		String[] arr2 = new String[tr2.getAllSeq().size()];
 		
-		
-		String[] arr1 = new String[matrix.tr1.getAllSeq().size()];
-		String[] arr2 = new String[matrix.tr2.getAllSeq().size()];
-		
-		Iterator<String> i1 = matrix.tr1.getAllSeq().iterator();
-		Iterator<String> i2 = matrix.tr2.getAllSeq().iterator();
+		Iterator<String> i1 = tr1.getAllSeq().iterator();
+		Iterator<String> i2 = tr2.getAllSeq().iterator();
 		int i = 0;
 		while (i1.hasNext()){
 			arr1[i] = i1.next();
@@ -37,13 +88,13 @@ public class AssignmentSolver {
 		
 		/*
 		 * 
-		 *  
-		 * 	
+		 *  нужно немного переписать эту хрень
+		 * 	и написать комментарии
 		 */
 		
 		for (i = 0; i < solution.length; i++){
 			
-			Transcript t1 = new Transcript(nameToStr1.get(arr1[i]), 
+			Transcript t1 = new Transcript(tr1.getName(arr1[i]), 
 					arr1[i]);
 			
 			if(solution[i] == -1){
@@ -53,15 +104,26 @@ public class AssignmentSolver {
 				compliances.put(pair, similarity);
 			}
 			else {
-				Transcript t2 = new Transcript(nameToStr2.get(arr2[solution[i]]), 
+				Transcript t2 = new Transcript(tr2.getName(arr2[solution[i]]), 
 						arr2[solution[i]]);
-				Double similarity = new Double(matrix.sim[i][solution[i]]);
+				Double similarity = new Double(sim[i][solution[i]]);
 				TranscriptPair pair = new TranscriptPair(t1, t2);
 				compliances.put(pair, similarity);
 			}
 			
 		}
-		
+		//  Writing solution of assignment problem to file
+		if ( !file.exists() ){
+			
+
+			
+			FileOutputStream fos = new FileOutputStream(tr1.getNameOfSet() + 
+					"+" + tr2.getNameOfSet() + " " + "Assignment problem");
+			ObjectOutputStream out = new ObjectOutputStream(fos);
+			out.writeObject(solution);
+			out.flush();
+			out.close();
+		}
 		return compliances;
 		
 	}

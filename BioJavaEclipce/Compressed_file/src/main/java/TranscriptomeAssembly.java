@@ -3,8 +3,8 @@ import com.google.common.collect.HashMultimap;
 
 public class TranscriptomeAssembly {
 	
-	protected HashMultimap<Read, Transcript> readsToTranscripts;
-	protected HashMultimap<Transcript, Read> transcriptsToReads;
+	private HashMultimap<Read, Transcript> readsToTranscripts;
+	private HashMultimap<Transcript, Read> transcriptsToReads;
 	
 	public TranscriptomeAssembly () {
 		

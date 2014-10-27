@@ -1,10 +1,12 @@
+import java.io.IOException;
+
 
 public class SimilarityMatrix {
-	protected double[][] sim;
-	protected Transcriptome tr1;
-	protected Transcriptome tr2;
+	private double[][] sim;
+	private Transcriptome tr1;
+	private Transcriptome tr2;
 	
-	public SimilarityMatrix(Transcriptome tr1, Transcriptome tr2, String method){
+	public SimilarityMatrix(Transcriptome tr1, Transcriptome tr2, String method) throws IOException{
 		
 		this.tr1 = tr1;
 		this.tr2 = tr2;
@@ -16,5 +18,17 @@ public class SimilarityMatrix {
 		else {
 			System.out.println("Unknown method");
 		}
+	}
+	
+	public double[][] getMatrix (){
+		return this.sim;
+	}
+	
+	public Transcriptome getFirstTranscriptome (){
+		return this.tr1;
+	}
+	
+	public Transcriptome getSecondTranscriptome (){
+		return this.tr2;
 	}
 }

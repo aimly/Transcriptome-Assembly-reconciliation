@@ -15,25 +15,27 @@ public class TrainingDataGenerator {
 		Fasta gg = new Fasta();
 		
 		HashSet <NucleicSequence> gg2 = new HashSet<NucleicSequence>();
-        try {/*
-            Transcriptome tr1 = 
-            		new Transcriptome(gg.read("/home/volta/another/diploma/bowtie/Trinity.fa", "fasta"));
-            Transcriptome tr2 = new Transcriptome(gg.read("/home/volta/another/diploma/bowtie/Oases1.fa", "fasta"));
-            
+        try {
+        	
+        	String fileOfTranscript1 = "/home/volta/another/diploma/bowtie/Trinity.fa";
+        	String fileOfTranscript2 = "/home/volta/another/diploma/bowtie/Oases.fa";
+        	String nameOfTranscriptome1 = fileOfTranscript1.split("/")[fileOfTranscript1.split("\\/").length - 1].split("\\.")[0];
+        	String nameOfTranscriptome2 = fileOfTranscript2.split("/")[fileOfTranscript2.split("\\/").length - 1].split("\\.")[0];
+        	
+        	Transcriptome tr1 = 
+            		new Transcriptome(gg.read(fileOfTranscript1, "fasta", "sequences"), nameOfTranscriptome1);
+            Transcriptome tr2 = new Transcriptome(gg.read(fileOfTranscript2, "fasta", "sequences"), nameOfTranscriptome2);
+            System.out.println("Succsessful reading of transcriptomes");
 //            Reads rd = new Reads (gg.read("/home/volta/another/diploma/bowtie/test/rd.fq", "fastq"));
             //rd.print();
 //            TranscriptomeAssembly links = ReadsMapper.map(rd, tr, "/home/volta/another/diploma/bowtie/results_trinity.sam");
             NWSimilarity sim = new NWSimilarity();
             SimilarityMatrix simMat = new SimilarityMatrix(tr1, tr2, "NW");
             Assignment as = new Assignment(simMat);
-            as.print();*/
+            as.print();
           
         	
-        	String[] dep = new Scanner(new File("/home/volta/another/diploma/bowtie/results_trinity.sam")).useDelimiter("\\Z").next().split(System.lineSeparator());
-        	dep = Arrays.sort(dep.);
-        	String[] reads = new Scanner(new File("/home/volta/another/diploma/ag_1_GGCTAC_filtered.fq")).useDelimiter("\\Z").next().split(System.lineSeparator());
-        	System.out.println(dep[28]);
-        	System.out.println(reads[28]);
+        	
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e.toString());

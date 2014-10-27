@@ -8,22 +8,18 @@ import org.biojava3.core.sequence.ProteinSequence;
 import org.biojava3.core.sequence.compound.AminoAcidCompound;
 import org.biojava3.core.sequence.compound.AminoAcidCompoundSet;
 import org.biojava3.core.sequence.io.FastaReader;
-
 import org.biojava3.sequencing.io.fastq.Fastq;
 import org.biojava3.sequencing.io.fastq.FastqReader;
 import org.biojava3.sequencing.io.fastq.SangerFastqReader;
-
 import org.biojava3.core.sequence.io.GenericFastaHeaderParser;
 import org.biojava3.core.sequence.io.ProteinSequenceCreator;
 
-import com.google.common.collect.HashBiMap;
-
 public class Fasta {
 
-    protected HashBiMap<String, String> read (String filename, String fileformat) throws Exception {
+    public static HashMap<String, String> read (String filename, String fileformat, String typeOfKeys) throws Exception {
         
 
-    	HashBiMap<String, String> set = HashBiMap.create();
+    	HashMap<String, String> set = new HashMap<String, String>();
     	if (fileformat == "fasta") {
 	        FileInputStream inStream = new FileInputStream( filename );
 	        FastaReader<ProteinSequence,AminoAcidCompound> fastaReader =
@@ -42,22 +38,38 @@ public class Fasta {
 	        // (все остальное в строке - это просто информация, и на деле 
 	        // так и есть). Посему использована конструкция 
 	        // entry.getValue().getOriginalHeader().split(" ")[0]
-	        
-	        for (  Entry<String, ProteinSequence> entry : b.entrySet() ) {
-	        	set.put(entry.getValue().getOriginalHeader().split(" ")[0], 
-	        			entry.getValue().getSequenceAsString());
-	        }
+	        int i = 0;
+	        if (typeOfKeys == "sequences")
+		        for (  Entry<String, ProteinSequence> entry : b.entrySet() ) {
+		        	set.put(entry.getValue().getSequenceAsString(), 
+		        			entry.getValue().getOriginalHeader().split(" ")[0]);
+		        	i++;
+		        	System.out.println(i);
+		        	System.out.println(entry.getValue().getSequenceAsString());
+		        	System.out.println(entry.getValue().getOriginalHeader().split(" ")[0]);
+		        }
+	        else if (typeOfKeys == "names")
+	        	for (  Entry<String, ProteinSequence> entry : b.entrySet() ) {
+		        	set.put(entry.getValue().getOriginalHeader().split(" ")[0], 
+		        			entry.getValue().getSequenceAsString());
+		        }
+	        	
     	}
     	else if (fileformat == "fastq") {
     		FastqReader fastqReader = new SangerFastqReader();
-	        
-	        for ( Fastq fastq : fastqReader.read(new File(filename)) ) {
-	        	set.put(fastq.getDescription().split(" ")[0], 
-	        			fastq.getSequence());
-	        }
+    		if (typeOfKeys == "sequences")
+		        for ( Fastq fastq : fastqReader.read(new File(filename)) ) {
+		        	set.put(fastq.getSequence(), 
+		        			fastq.getDescription().split(" ")[0]);
+		        }
+    		else if (typeOfKeys == "names")
+    			for ( Fastq fastq : fastqReader.read(new File(filename)) ) {
+		        	set.put(fastq.getDescription().split(" ")[0], 
+		        			fastq.getSequence());
+		        }
     	}
     	else {
-    		System.out.println("Unknown file format");
+    		System.out.println("Unknown file format. Please, use FASTA or FASTQ files");
     	}
 		return set;
     	
@@ -65,9 +77,9 @@ public class Fasta {
     
     // Overwriten function "read" (need to fix reading fasta files!)
     
-    protected HashBiMap<String, String> fastRead (String filename, String fileformat) throws IOException{
+    protected HashMap<String, String> fastRead (String filename, String fileformat) throws IOException{
     	
-    	HashBiMap<String, String> set = HashBiMap.create();
+    	HashMap<String, String> set = new HashMap<String, String>();
     	BufferedReader reader = new BufferedReader(new FileReader(filename));
     	String lnName, lnSeq, ln, lnQual;
 
