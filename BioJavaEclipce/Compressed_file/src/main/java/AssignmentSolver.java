@@ -76,13 +76,14 @@ public class AssignmentSolver {
 		Iterator<String> i2 = tr2.getAllSeq().iterator();
 		int i = 0;
 		while (i1.hasNext()){
-			arr1[i] = i1.next();
+			arr1[i] = new String(i1.next());
 			i++;
 		}
 		i = 0;
 		while (i2.hasNext()){
 			arr2[i] = i2.next();
 			i++;
+			
 		}
 		
 		

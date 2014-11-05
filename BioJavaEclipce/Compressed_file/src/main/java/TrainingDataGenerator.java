@@ -17,20 +17,29 @@ public class TrainingDataGenerator {
 		HashSet <NucleicSequence> gg2 = new HashSet<NucleicSequence>();
         try {
         	
-        	String fileOfTranscript1 = "/home/volta/another/diploma/bowtie/Trinity.fa";
-        	String fileOfTranscript2 = "/home/volta/another/diploma/bowtie/Oases.fa";
-        	String nameOfTranscriptome1 = fileOfTranscript1.split("/")[fileOfTranscript1.split("\\/").length - 1].split("\\.")[0];
-        	String nameOfTranscriptome2 = fileOfTranscript2.split("/")[fileOfTranscript2.split("\\/").length - 1].split("\\.")[0];
+        	String fileOfTranscript1 = "/home/volta/another/test/" +
+        			"Transcriptome-Assembly-reconciliation/BioJavaEclipce/" +
+        			"Compressed_file/Oaseserrored sequences.fa";
+        	String fileOfTranscript2 = "/home/volta/another/test/" +
+        			"Transcriptome-Assembly-reconciliation/BioJavaEclipce/" +
+        			"Compressed_file/ref_for_readserrored sequences.fa";
+        	String nameOfTranscriptome1 = 
+        			fileOfTranscript1.split("/")[fileOfTranscript1.split("\\/").length - 1].split("\\.")[0];
+        	String nameOfTranscriptome2 = 
+        			fileOfTranscript2.split("/")[fileOfTranscript2.split("\\/").length - 1].split("\\.")[0];
         	
         	Transcriptome tr1 = 
             		new Transcriptome(gg.read(fileOfTranscript1, "fasta", "sequences"), nameOfTranscriptome1);
-            Transcriptome tr2 = new Transcriptome(gg.read(fileOfTranscript2, "fasta", "sequences"), nameOfTranscriptome2);
+            Transcriptome tr2 = 
+            		new Transcriptome(gg.read(fileOfTranscript2, "fasta", "sequences"), nameOfTranscriptome2);
+            
             System.out.println("Succsessful reading of transcriptomes");
 //            Reads rd = new Reads (gg.read("/home/volta/another/diploma/bowtie/test/rd.fq", "fastq"));
             //rd.print();
 //            TranscriptomeAssembly links = ReadsMapper.map(rd, tr, "/home/volta/another/diploma/bowtie/results_trinity.sam");
             NWSimilarity sim = new NWSimilarity();
             SimilarityMatrix simMat = new SimilarityMatrix(tr1, tr2, "NW");
+  //          simMat.searchErrors();
             Assignment as = new Assignment(simMat);
             as.print();
           

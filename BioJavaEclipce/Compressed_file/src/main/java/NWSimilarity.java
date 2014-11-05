@@ -33,7 +33,7 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 		firstSet = firstSetOfTr;
 		secondSet = secondSetOfTr;
 	
-		
+		//SubstitutionMatrix<NucleotideCompound> matrix = new SimpleSubstitutionMatrix();
 		SubstitutionMatrix<NucleotideCompound> matrix = SubstitutionMatrixHelper.getNuc4_4();
 		SimpleGapPenalty gap = new SimpleGapPenalty();
 		
@@ -94,8 +94,9 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 						Alignments.getPairwiseAlignment(query, target,
 								PairwiseSequenceAlignerType.GLOBAL, gap, matrix);*/
 				NeedlemanWunsch aligner = new NeedlemanWunsch(query, target, gap, matrix);
+				NeedlemanWunsch aligner2 = new NeedlemanWunsch(target, query, gap, matrix);
 
-	/*			
+				System.out.println("aligner: ");
 				System.out.println("getScore: " + aligner.getScore());
 				System.out.println("getMaxScore: " + aligner.getMaxScore());
 				System.out.println("getMinScore: " + aligner.getMinScore());
@@ -103,8 +104,21 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 				System.out.println("getSimilarity: " + aligner.getSimilarity());
 				System.out.println("");
 
-	*/			
-				SimilarityMatrix[i][j] = aligner.getSimilarity();
+				System.out.println("aligner2: ");
+				System.out.println("getScore: " + aligner2.getScore());
+				System.out.println("getMaxScore: " + aligner2.getMaxScore());
+				System.out.println("getMinScore: " + aligner2.getMinScore());
+				System.out.println("getDistance: " + aligner2.getDistance());
+				System.out.println("getSimilarity: " + aligner2.getSimilarity());
+				System.out.println("");
+				
+				double test_similarity = aligner.getSimilarity();
+				
+				if (test_similarity >= 1.0 || test_similarity <= 0.0) {
+				//	System.out.println("ggg ");
+				//	System.out.println(" ");
+				}
+				SimilarityMatrix[i][j] = test_similarity;
 				if (j%50 == 0)
 					System.out.println("i = " + i + "j = " + j);
 				j++;
