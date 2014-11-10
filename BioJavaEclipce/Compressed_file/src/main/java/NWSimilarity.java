@@ -19,6 +19,7 @@ import org.biojava3.alignment.template.SubstitutionMatrix;
 import org.biojava3.core.sequence.DNASequence;
 import org.biojava3.core.sequence.ProteinSequence;
 import org.biojava3.core.sequence.compound.AmbiguityDNACompoundSet;
+import org.biojava3.core.sequence.compound.AminoAcidCompound;
 import org.biojava3.core.sequence.compound.NucleotideCompound;
 
 
@@ -32,9 +33,16 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 		Transcriptome firstSet, secondSet;
 		firstSet = firstSetOfTr;
 		secondSet = secondSetOfTr;
-	
-		//SubstitutionMatrix<NucleotideCompound> matrix = new SimpleSubstitutionMatrix();
-		SubstitutionMatrix<NucleotideCompound> matrix = SubstitutionMatrixHelper.getNuc4_4();
+		String path = "/home/volta/another/test/All calculated  shit/";
+	/*
+		SubstitutionMatrix<NucleotideCompound> matrix = 
+				new SimpleSubstitutionMatrix();
+		SubstitutionMatrix<AminoAcidCompound> matrix = 
+				SubstitutionMatrixHelper.getPAM250();
+	*/
+		
+		SubstitutionMatrix<NucleotideCompound> matrix = 
+				SubstitutionMatrixHelper.getNuc4_4();
 		SimpleGapPenalty gap = new SimpleGapPenalty();
 		
 		System.out.println(matrix);
@@ -44,8 +52,10 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 		double[][] SimilarityMatrix = new double[firstSet.getAllSeq().size()]
 				[secondSet.getAllSeq().size()];
 		
-		File file = new File(firstSet.getNameOfSet() + 
-				"+" + secondSet.getNameOfSet() + " " + "Similarity");
+		File file = new File(path + 
+				firstSet.getNameOfSet() + 
+				"+" + secondSet.getNameOfSet() + 
+				" Similarity");
 		
 		if (file.exists()){
 			
@@ -94,24 +104,16 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 						Alignments.getPairwiseAlignment(query, target,
 								PairwiseSequenceAlignerType.GLOBAL, gap, matrix);*/
 				NeedlemanWunsch aligner = new NeedlemanWunsch(query, target, gap, matrix);
-				NeedlemanWunsch aligner2 = new NeedlemanWunsch(target, query, gap, matrix);
-
+/*
 				System.out.println("aligner: ");
 				System.out.println("getScore: " + aligner.getScore());
 				System.out.println("getMaxScore: " + aligner.getMaxScore());
 				System.out.println("getMinScore: " + aligner.getMinScore());
 				System.out.println("getDistance: " + aligner.getDistance());
 				System.out.println("getSimilarity: " + aligner.getSimilarity());
+				System.out.println("Sequences is really equivalent: " + str2.equals(str1));
 				System.out.println("");
-
-				System.out.println("aligner2: ");
-				System.out.println("getScore: " + aligner2.getScore());
-				System.out.println("getMaxScore: " + aligner2.getMaxScore());
-				System.out.println("getMinScore: " + aligner2.getMinScore());
-				System.out.println("getDistance: " + aligner2.getDistance());
-				System.out.println("getSimilarity: " + aligner2.getSimilarity());
-				System.out.println("");
-				
+*/
 				double test_similarity = aligner.getSimilarity();
 				
 				if (test_similarity >= 1.0 || test_similarity <= 0.0) {
@@ -127,8 +129,10 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 			i++;
 		}
 		
-		FileOutputStream fos = new FileOutputStream(firstSet.getNameOfSet() + 
-				"+" + secondSet.getNameOfSet() + " " + "Similarity");
+		FileOutputStream fos = new FileOutputStream(path + 
+				firstSet.getNameOfSet() + 
+				"+" + secondSet.getNameOfSet() + 
+				" " + "Similarity");
 		ObjectOutputStream out = new ObjectOutputStream(fos);
 		out.writeObject(SimilarityMatrix);
 		out.flush();

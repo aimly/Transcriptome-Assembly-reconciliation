@@ -8,7 +8,13 @@
 		<repository>
 			<id>biojava-maven-repo</id>
 			<name>BioJava repository</name>
-			<url>http://www.biojava.org/download/maven/</url>			
+			<url>http://www.biojava.org/download/maven/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>			
 		</repository>
 	</repositories>
 
@@ -16,17 +22,17 @@
                 <dependency>
                         <groupId>org.biojava</groupId>
                         <artifactId>biojava3-core</artifactId>
-                        <version>3.1.0</version>
+                        <version>4.0.0-SNAPSHOT</version>
                 </dependency>
                 <dependency>
                         <groupId>org.biojava</groupId>
                         <artifactId>biojava3-sequencing</artifactId>
-                        <version>3.1.0</version>
+                        <version>4.0.0-SNAPSHOT</version>
                 </dependency>
                 <dependency>
                         <groupId>org.biojava</groupId>
                         <artifactId>biojava3-alignment</artifactId>
-                        <version>3.1.0</version>
+                        <version>4.0.0-SNAPSHOT</version>
                 </dependency>
                
                 <!-- other biojava jars as needed -->
@@ -35,6 +41,13 @@
 					<artifactId>guava</artifactId>
 					<version>18.0</version>
 				</dependency>
+				
+				<dependency>
+					<groupId>nz.ac.waikato.cms.weka</groupId>
+					<artifactId>weka-dev</artifactId>
+					<version>3.7.11</version>
+				</dependency>
+
         </dependencies>
         
   

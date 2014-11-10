@@ -21,8 +21,9 @@ public class AssignmentSolver {
 		double[][] sim = matrix.getMatrix();
 		Transcriptome tr1 = matrix.getFirstTranscriptome();
 		Transcriptome tr2 = matrix.getSecondTranscriptome();
+		String path = "home/volta/another/test/All calculated shit/";
 		
-		File file = new File(tr1.getNameOfSet() + 
+		File file = new File(path + tr1.getNameOfSet() + 
 				"+" + tr2.getNameOfSet() + " " + "Assignment problem");
 		
 		double[][] reverseMatrix = new double[sim.length]
@@ -118,7 +119,7 @@ public class AssignmentSolver {
 			
 
 			
-			FileOutputStream fos = new FileOutputStream(tr1.getNameOfSet() + 
+			FileOutputStream fos = new FileOutputStream(path + tr1.getNameOfSet() + 
 					"+" + tr2.getNameOfSet() + " " + "Assignment problem");
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 			out.writeObject(solution);

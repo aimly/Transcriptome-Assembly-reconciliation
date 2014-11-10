@@ -12,26 +12,25 @@ public class TrainingDataGenerator {
 		// TODO Auto-generated method stub
 		System.out.println("Gaga");
 		
-		Fasta gg = new Fasta();
-		
-		HashSet <NucleicSequence> gg2 = new HashSet<NucleicSequence>();
         try {
         	
         	String fileOfTranscript1 = "/home/volta/another/test/" +
-        			"Transcriptome-Assembly-reconciliation/BioJavaEclipce/" +
-        			"Compressed_file/Oaseserrored sequences.fa";
+        			"Data/Assemblies/Oases.fa";
         	String fileOfTranscript2 = "/home/volta/another/test/" +
-        			"Transcriptome-Assembly-reconciliation/BioJavaEclipce/" +
-        			"Compressed_file/ref_for_readserrored sequences.fa";
+        			"Data/References/ref_for_reads.fa";
         	String nameOfTranscriptome1 = 
         			fileOfTranscript1.split("/")[fileOfTranscript1.split("\\/").length - 1].split("\\.")[0];
         	String nameOfTranscriptome2 = 
         			fileOfTranscript2.split("/")[fileOfTranscript2.split("\\/").length - 1].split("\\.")[0];
         	
         	Transcriptome tr1 = 
-            		new Transcriptome(gg.read(fileOfTranscript1, "fasta", "sequences"), nameOfTranscriptome1);
+            		new Transcriptome(Fasta.read(fileOfTranscript1, 
+            				"fasta", "sequences"), 
+            				nameOfTranscriptome1);
             Transcriptome tr2 = 
-            		new Transcriptome(gg.read(fileOfTranscript2, "fasta", "sequences"), nameOfTranscriptome2);
+            		new Transcriptome(Fasta.read(fileOfTranscript2, 
+            				"fasta", "sequences"), 
+            				nameOfTranscriptome2);
             
             System.out.println("Succsessful reading of transcriptomes");
 //            Reads rd = new Reads (gg.read("/home/volta/another/diploma/bowtie/test/rd.fq", "fastq"));
