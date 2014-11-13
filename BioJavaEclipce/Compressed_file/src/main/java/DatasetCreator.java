@@ -1,9 +1,7 @@
-import java.awt.List;
 import java.util.ArrayList;
 
 import weka.core.Attribute;
 import weka.core.DenseInstance;
-import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.tokenizers.NGramTokenizer;
@@ -46,7 +44,7 @@ public class DatasetCreator {
 		NGramTokenizer tokenizer = new NGramTokenizer();
 		tokenizer.setNGramMinSize(1);
 		tokenizer.setNGramMaxSize(1);
-		tokenizer.setDelimiters("A");
+		tokenizer.setDelimiters("");
 		
 		StringToWordVector filter = new StringToWordVector();
 		filter.setTokenizer(tokenizer);
