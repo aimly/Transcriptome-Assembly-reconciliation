@@ -29,4 +29,6 @@ public class TranscriptPair {
 			System.out.println("No second transcript");
 	}
 	
+	
+	
 }

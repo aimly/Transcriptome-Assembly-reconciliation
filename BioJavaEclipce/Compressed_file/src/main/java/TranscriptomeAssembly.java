@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.HashSet;
+
 import com.google.common.collect.HashMultimap;
 
 
@@ -18,5 +21,13 @@ public class TranscriptomeAssembly {
 		
 	}
 	
+	public ArrayList<Read> getReads (ArrayList<Transcript> transcripts){
+		ArrayList<Read> reads = new ArrayList<Read>();
+		
+		for (Transcript index : transcripts)
+			reads.addAll(transcriptsToReads.get(index));
+		
+		return reads;
+	}
 	
 }

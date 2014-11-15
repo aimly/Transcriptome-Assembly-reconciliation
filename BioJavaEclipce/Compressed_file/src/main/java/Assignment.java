@@ -1,8 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 public class Assignment {
@@ -19,14 +17,14 @@ public class Assignment {
 		this.countOfTranscriptsInSet2 = matrix.getSecondTranscriptome().getAllSeq().size();
 	}
 	
-	public ArrayList<TranscriptPair> getUpper(double topBound){
+	public ArrayList<Transcript> getUpper(double topBound){
 		
-		ArrayList<TranscriptPair> listOfUpperTranscripts = new ArrayList<TranscriptPair>();
+		ArrayList<Transcript> listOfUpperTranscripts = new ArrayList<Transcript>();
 		
 		for (TranscriptPair index : bestSimilarities.keySet()){
 			
 			if (bestSimilarities.get(index) > topBound)
-				listOfUpperTranscripts.add(index);
+				listOfUpperTranscripts.add(index.getTranscript(0));
 			
 		}
 		
@@ -34,14 +32,14 @@ public class Assignment {
 		
 	}
 	
-	public List<TranscriptPair> getLower(double bottomBound){
+	public ArrayList<Transcript> getLower(double bottomBound){
 		
-		ArrayList<TranscriptPair> listOfLowerTranscripts = new ArrayList<TranscriptPair>();
+		ArrayList<Transcript> listOfLowerTranscripts = new ArrayList<Transcript>();
 		
 		for (TranscriptPair index : bestSimilarities.keySet()){
 			
 			if (bestSimilarities.get(index) > bottomBound)
-				listOfLowerTranscripts.add(index);
+				listOfLowerTranscripts.add(index.getTranscript(0));
 			
 		}
 		
