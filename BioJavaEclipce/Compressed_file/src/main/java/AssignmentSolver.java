@@ -16,12 +16,13 @@ import java.util.Iterator;
 
 public class AssignmentSolver {
 	
-	public static HashMap<TranscriptPair, Double> solve (SimilarityMatrix matrix) throws IOException{
+	public static HashMap<TranscriptPair, Double> solve (SimilarityMatrix matrix) 
+			throws IOException{
 		
 		double[][] sim = matrix.getMatrix();
 		Transcriptome tr1 = matrix.getFirstTranscriptome();
 		Transcriptome tr2 = matrix.getSecondTranscriptome();
-		String path = "home/volta/another/test/All calculated shit/";
+		String path = "/home/volta/another/test/All calculated  shit/";
 		
 		File file = new File(path + tr1.getNameOfSet() + 
 				"+" + tr2.getNameOfSet() + " " + "Assignment problem");
@@ -40,7 +41,7 @@ public class AssignmentSolver {
 		
 		if (file.exists()){
 			
-			FileInputStream fis = new FileInputStream(tr1.getNameOfSet() + 
+			FileInputStream fis = new FileInputStream(path + tr1.getNameOfSet() + 
 					"+" + tr2.getNameOfSet() + " " + "Assignment problem");
 			ObjectInputStream in = new ObjectInputStream(fis);
 			int[] readObject;
@@ -56,14 +57,17 @@ public class AssignmentSolver {
 			
 			
 			
-			System.out.println("Red!");
+			System.out.println("Assignment for transcripts"+ 
+					tr1.getNameOfSet()+ "and"+
+					tr2.getNameOfSet()+"Redddddd!");
+			
 			in.close();
 		} else {
 			HungarianAlgorithm solver = new HungarianAlgorithm(reverseMatrix);
 			solution = solver.execute();
 		}
-		for (int k = 0; k<solution.length; k++)
-			System.out.println(solution[k]);
+//		for (int k = 0; k<solution.length; k++)
+//			System.out.println(solution[k]);
 		
 		HashMap<TranscriptPair, Double> compliances = 
 				new HashMap<TranscriptPair, Double>();

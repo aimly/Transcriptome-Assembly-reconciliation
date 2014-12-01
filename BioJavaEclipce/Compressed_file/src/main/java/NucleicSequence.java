@@ -3,10 +3,11 @@
  */
 
 import java.io.IOException;
+import java.io.Serializable;
 
 
 
-public class NucleicSequence {
+public class NucleicSequence implements Comparable<NucleicSequence>, Serializable {
 
 	private byte[] data;
 
@@ -70,6 +71,19 @@ public class NucleicSequence {
         }	
         return false;
     }
+
+	@Override
+	public int compareTo(NucleicSequence arg0) {
+		
+		try {
+			return this.getData().compareTo(arg0.getData());
+		} catch (IOException e) {
+			System.out.println("Strange compare of "
+					+ "two NucleicSequence classes");
+			e.printStackTrace();
+			return 0;
+		}
+	}
 
 
 }

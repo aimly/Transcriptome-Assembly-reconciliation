@@ -9,22 +9,74 @@ public class Assignment {
 	private int countOfTranscriptsInSet1, countOfTranscriptsInSet2;
 	private HashMap<TranscriptPair, Double> bestSimilarities;
 	
-	public Assignment(SimilarityMatrix matrix) throws IOException, ClassNotFoundException{
-		this.bestSimilarities = AssignmentSolver.solve(matrix);
-		this.nameOfFirstTranscriptome = matrix.getFirstTranscriptome().getNameOfSet();
-		this.nameOfSecondTranscriptome = matrix.getSecondTranscriptome().getNameOfSet();
-		this.countOfTranscriptsInSet1 = matrix.getFirstTranscriptome().getAllSeq().size();
-		this.countOfTranscriptsInSet2 = matrix.getSecondTranscriptome().getAllSeq().size();
+	public Assignment(SimilarityMatrix matrix) 
+			throws IOException, ClassNotFoundException{
+		
+		this.bestSimilarities = 
+				AssignmentSolver.solve(matrix);
+		this.nameOfFirstTranscriptome = 
+				matrix.getFirstTranscriptome().getNameOfSet();
+		this.nameOfSecondTranscriptome = 
+				matrix.getSecondTranscriptome().getNameOfSet();
+		this.countOfTranscriptsInSet1 = 
+				matrix.getFirstTranscriptome().getAllSeq().size();
+		this.countOfTranscriptsInSet2 = 
+				matrix.getSecondTranscriptome().getAllSeq().size();
 	}
 	
-	public ArrayList<Transcript> getUpper(double topBound){
+	public Assignment (Transcriptome tr1, 
+			Transcriptome tr2,			
+			Assignment asgn1,
+			Assignment asgn2) throws IOException {
+		
+		this.nameOfFirstTranscriptome = 
+				tr1.getNameOfSet();
+		this.nameOfSecondTranscriptome = 
+				asgn1.nameOfSecondTranscriptome;
+		this.countOfTranscriptsInSet1 = 
+				tr1.getAllSeq().size();
+		this.countOfTranscriptsInSet2 = 
+				asgn1.countOfTranscriptsInSet2;
+		
+		for (String index : tr1.getAllSeq()){
+			
+			if (asgn1.search(index) != null)
+				this.bestSimilarities.put(asgn1.search(index),
+						asgn1.getSim(asgn1.search(index)));
+			
+			else 
+				if (asgn2.search(index) != null)
+					this.bestSimilarities.put(asgn2.search(index),
+							asgn2.getSim(asgn2.search(index)));
+			
+				else {
+					Transcript tr = 
+							new Transcript (tr1.getName(index), index);
+					TranscriptPair pair = new TranscriptPair(tr, null);
+					this.bestSimilarities.put(pair, 0.0);
+				}
+			double sim = (asgn1.search(index) == null) ? 
+						asgn2.getSim(asgn2.search(index)) : 
+						asgn1.getSim(asgn1.search(index));
+			
+			TranscriptPair pair = (asgn1.search(index) == null) ? 
+						asgn2.search(index) : 
+						asgn1.search(index);
+						
+			this.bestSimilarities.put(pair, sim);
+		}
+	}
+	
+	public ArrayList<Transcript> getUpper(double topBound) throws IOException{
 		
 		ArrayList<Transcript> listOfUpperTranscripts = new ArrayList<Transcript>();
 		
 		for (TranscriptPair index : bestSimilarities.keySet()){
 			
-			if (bestSimilarities.get(index) > topBound)
+			if (bestSimilarities.get(index) > topBound){
 				listOfUpperTranscripts.add(index.getTranscript(0));
+			
+			}
 			
 		}
 		
@@ -38,7 +90,7 @@ public class Assignment {
 		
 		for (TranscriptPair index : bestSimilarities.keySet()){
 			
-			if (bestSimilarities.get(index) > bottomBound)
+			if (bestSimilarities.get(index) < bottomBound)
 				listOfLowerTranscripts.add(index.getTranscript(0));
 			
 		}
@@ -75,6 +127,21 @@ public class Assignment {
 	
 	public HashMap<TranscriptPair, Double> getMap () {
 		return this.bestSimilarities;
+	}
+	
+	// Need to optimize!
+	
+	public TranscriptPair search (String trSeq) throws IOException{
+		for (TranscriptPair index : bestSimilarities.keySet())
+			if (index.getTranscript(0).getData().equals(trSeq) || 
+			index.getTranscript(1).getData().equals(trSeq))
+				return index;
+		
+		return null;
+	}
+	
+	public double getSim (TranscriptPair pair){
+		return bestSimilarities.get(pair);
 	}
 	
 }

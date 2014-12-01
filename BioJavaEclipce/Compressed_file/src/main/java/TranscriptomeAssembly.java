@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 
 import com.google.common.collect.HashMultimap;
 
@@ -28,6 +29,26 @@ public class TranscriptomeAssembly {
 			reads.addAll(transcriptsToReads.get(index));
 		
 		return reads;
+	}
+	
+	public ArrayList<Read> getReadsOfTr (Transcript transcript){
+		ArrayList<Read> reads = new ArrayList<Read>();
+		
+		reads.addAll(transcriptsToReads.get(transcript));
+		
+		return reads;
+	}
+	
+	public Set<Transcript> getAllTranscripts() {
+		return transcriptsToReads.keySet();
+	}
+	
+	public HashMultimap<Read, Transcript> getMapRdTr () {
+		return this.readsToTranscripts;
+	}
+	
+	public HashMultimap<Transcript, Read> getMapTrRd () {
+		return this.transcriptsToReads;
 	}
 	
 }

@@ -16,11 +16,13 @@ import org.biojava3.core.sequence.io.ProteinSequenceCreator;
 
 public class Fasta {
 
-    public static HashMap<String, String> read (String filename, String fileformat, String typeOfKeys) throws Exception {
+    public static HashMap<String, String> read (String filename, 
+    		String fileformat, 
+    		String typeOfKeys) throws Exception {
         
 
     	HashMap<String, String> set = new HashMap<String, String>();
-    	if (fileformat == "fasta") {
+    	if (fileformat.equals("fasta") || fileformat.equals("fa")) {
 	        FileInputStream inStream = new FileInputStream( filename );
 	        FastaReader<ProteinSequence,AminoAcidCompound> fastaReader =
 	                new FastaReader<ProteinSequence,AminoAcidCompound>(
@@ -39,15 +41,18 @@ public class Fasta {
 	        // так и есть). Посему использована конструкция 
 	        // entry.getValue().getOriginalHeader().split(" ")[0]
 	        int i = 0;
-	        if (typeOfKeys == "sequences")
+	        if (typeOfKeys == "sequences"){
 		        for (  Entry<String, ProteinSequence> entry : b.entrySet() ) {
 		        	set.put(entry.getValue().getSequenceAsString(), 
 		        			entry.getValue().getOriginalHeader().split(" ")[0]);
 		        	i++;
-		        	System.out.println(i);
-		        	System.out.println(entry.getValue().getSequenceAsString());
-		        	System.out.println(entry.getValue().getOriginalHeader().split(" ")[0]);
+//		        	System.out.println(i);
+//		        	System.out.println(entry.getValue().getSequenceAsString());
+//		        	System.out.println(entry.getValue().getOriginalHeader().split(" ")[0]);
 		        }
+
+		        System.out.println("File " + filename + "parsed successfully");
+	        }
 	        else if (typeOfKeys == "names")
 	        	for (  Entry<String, ProteinSequence> entry : b.entrySet() ) {
 		        	set.put(entry.getValue().getOriginalHeader().split(" ")[0], 
@@ -55,18 +60,22 @@ public class Fasta {
 		        }
 	        	
     	}
-    	else if (fileformat == "fastq") {
+    	else if (fileformat.equals("fastq") || fileformat.equals("fq")) {
     		FastqReader fastqReader = new SangerFastqReader();
-    		if (typeOfKeys == "sequences")
+    		if (typeOfKeys == "sequences"){
 		        for ( Fastq fastq : fastqReader.read(new File(filename)) ) {
 		        	set.put(fastq.getSequence(), 
 		        			fastq.getDescription().split(" ")[0]);
+		        	
 		        }
+		        System.out.println("File " + filename + "parsed successfully");
+    		}
     		else if (typeOfKeys == "names")
     			for ( Fastq fastq : fastqReader.read(new File(filename)) ) {
 		        	set.put(fastq.getDescription().split(" ")[0], 
 		        			fastq.getSequence());
 		        }
+    		
     	}
     	else {
     		System.out.println("Unknown file format. Please, use FASTA or FASTQ files");

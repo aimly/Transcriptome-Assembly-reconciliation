@@ -10,4 +10,13 @@ public class TranscriptomeSimilarity {
 		this.count_proportion = ((double)as.getCountOfSet1())/as.getCountOfSet2();
 		this.nameOfTranscriptome = as.getNameOfSet1();
 	}
+	
+	public double getAccuracy(){
+		return this.accuracy;
+	}
+	
+	public double getCountProportion (){
+		return this.count_proportion;
+	}
+	
 }

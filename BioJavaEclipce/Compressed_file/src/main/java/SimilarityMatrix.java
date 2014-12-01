@@ -7,12 +7,15 @@ import java.util.Iterator;
 import java.util.Map;
 
 
+
 public class SimilarityMatrix {
 	private double[][] sim;
 	private Transcriptome tr1;
 	private Transcriptome tr2;
 	
-	public SimilarityMatrix(Transcriptome tr1, Transcriptome tr2, String method) throws IOException{
+	public SimilarityMatrix(Transcriptome tr1, 
+			Transcriptome tr2, 
+			String method) throws IOException{
 		
 		this.tr1 = tr1;
 		this.tr2 = tr2;

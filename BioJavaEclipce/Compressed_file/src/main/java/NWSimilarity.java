@@ -28,7 +28,7 @@ import org.biojava3.core.sequence.compound.NucleotideCompound;
 class NWSimilarity implements TranscriptSimilarityComputer {
 
 	public double[][] computeSimilarity(Transcriptome firstSetOfTr, 
-			Transcriptome secondSetOfTr) throws IOException {
+			Transcriptome secondSetOfTr) throws IOException  {
 		
 		Transcriptome firstSet, secondSet;
 		firstSet = firstSetOfTr;
@@ -45,9 +45,9 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 				SubstitutionMatrixHelper.getNuc4_4();
 		SimpleGapPenalty gap = new SimpleGapPenalty();
 		
-		System.out.println(matrix);
-		System.out.println("ExtPen: " + gap.getExtensionPenalty());
-		System.out.println("OpenPen: " + gap. getOpenPenalty());
+//		System.out.println(matrix);
+//		System.out.println("ExtPen: " + gap.getExtensionPenalty());
+//		System.out.println("OpenPen: " + gap. getOpenPenalty());
 		
 		double[][] SimilarityMatrix = new double[firstSet.getAllSeq().size()]
 				[secondSet.getAllSeq().size()];
@@ -59,7 +59,7 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 		
 		if (file.exists()){
 			
-			FileInputStream fis = new FileInputStream(firstSet.getNameOfSet() + 
+			FileInputStream fis = new FileInputStream(path + firstSet.getNameOfSet() + 
 					"+" + secondSet.getNameOfSet() + " " + "Similarity");
 			ObjectInputStream in = new ObjectInputStream(fis);
 			double[][] readObject;
@@ -77,6 +77,12 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 			
 			System.out.println("Red!");
 			in.close();
+			
+
+	        System.out.println("Similarity matrix for "+ firstSetOfTr.getNameOfSet()
+	        		+ " and " + secondSetOfTr.getNameOfSet() + "red successfully");
+			
+			
 			return SimilarityMatrix;
 		} 
 		
@@ -137,6 +143,10 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 		out.writeObject(SimilarityMatrix);
 		out.flush();
 		out.close();
+		
+
+        System.out.println("Similarity matrix for "+ firstSetOfTr.getNameOfSet()
+        		+ " and " + secondSetOfTr.getNameOfSet() + "computed successfully");
 		
 		return SimilarityMatrix;
 	}

@@ -4,6 +4,8 @@
 
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,12 +14,17 @@ import java.util.Set;
 import com.google.common.collect.HashBiMap;
 
 
-public class Transcriptome {
+public class Transcriptome implements Serializable{
+	
 	
 	private String nameOfSet;
 	private HashMap<String,String> transcripts;
     
-    
+	public Transcriptome (String name){
+		this.nameOfSet = name;
+		this.transcripts = new HashMap<String, String>();
+	}
+	
     public Transcriptome (HashMap<String, String> setOfTr, String nameOfSet) throws IOException {
     	this.transcripts = setOfTr;
     	this.nameOfSet = nameOfSet;
@@ -49,6 +56,32 @@ public class Transcriptome {
 	
 	public String getNameOfSet () {
 		return this.nameOfSet;
+	}
+	
+	public HashMap<String,String> getMap () {
+		return transcripts;
+	}
+	
+	public void addTranscript (Transcript transcript) throws IOException{
+		transcripts.put(transcript.getData(), 
+				transcript.getName());
+	}
+	
+	public void addAllTranscript (ArrayList<Transcript> trSet) throws IOException{
+		if (trSet.isEmpty())
+			System.out.println("Can't add transcripts: array is empty");
+		else
+			for (Transcript transcript : trSet)
+				transcripts.put(transcript.getData(), 
+						transcript.getName());
+	}
+	
+	public void merge (Transcriptome tr2){
+		transcripts.putAll(tr2.getMap());
+	}
+	
+	public void setTranscriptomeName(String name){
+		this.nameOfSet = name;
 	}
     
 }

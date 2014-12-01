@@ -1,6 +1,10 @@
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 import com.google.common.collect.HashMultimap;
@@ -14,10 +18,40 @@ public class ReadsMapper {
 			String fileOfReads,
 			String fileOfTranscripts) throws Exception {
 		
-		String typeOfReads = fileOfReads.split(".")[fileOfReads.split(".").length - 1];
+		String path = "/home/volta/another/test/Maps/";
+		
+		String transcriptomeName = fileOfTranscripts.split("\\/")[fileOfTranscripts.split("\\/").length - 1].split("\\.")[0];
+    	
+		String readsName = fileOfReads.split("\\/")[fileOfReads.split("\\/").length - 1].split("\\.")[0];
+    	
+		
+		File file = new File(path + 
+				transcriptomeName + 
+				" + " + readsName + 
+				" map");
+		
+		if (file.exists()){
+			
+			FileInputStream fis = new FileInputStream(path + 
+					transcriptomeName + 
+					" + " + readsName + 
+					" map");
+			ObjectInputStream in = new ObjectInputStream(fis);
+			HashMultimap<Read, Transcript> rdtr = HashMultimap.create();
+			HashMultimap<Transcript, Read> trrd = HashMultimap.create();
+			
+			rdtr = (HashMultimap<Read, Transcript>) in.readObject();
+			trrd = (HashMultimap<Transcript, Read>) in.readObject();
+
+			TranscriptomeAssembly map = new TranscriptomeAssembly(rdtr,trrd);
+			in.close();
+			return map;
+		}
+		
+		String typeOfReads = fileOfReads.split("\\.")[fileOfReads.split("\\.").length - 1];
 		HashMap<String, String> readsHashOfNames = Fasta.read(fileOfReads, typeOfReads, "names");
 		
-		String typeOfTranscripts = fileOfReads.split(".")[fileOfReads.split(".").length - 1];
+		String typeOfTranscripts = fileOfTranscripts.split("\\.")[fileOfReads.split("\\.").length - 1];
 		HashMap<String, String> transcriptHashOfNames = Fasta.read(fileOfTranscripts, typeOfTranscripts, "names");
 		
 		
@@ -40,7 +74,22 @@ public class ReadsMapper {
 		}
 		reader.close();
 		
-		return new TranscriptomeAssembly(readsToTranscripts, transcriptsToReads);
+		System.out.println("Reads for transcript " + setOfTranscripts.getNameOfSet()
+				+ " mapped successfully");
+		
+		TranscriptomeAssembly mapRdTr = new TranscriptomeAssembly(readsToTranscripts, transcriptsToReads);
+		
+		FileOutputStream fos = new FileOutputStream(path + 
+				transcriptomeName + 
+				" + " + readsName + 
+				" map");
+		ObjectOutputStream out = new ObjectOutputStream(fos);
+		out.writeObject(mapRdTr.getMapRdTr());
+		out.writeObject(mapRdTr.getMapTrRd());
+		out.flush();
+		out.close();
+		
+		return mapRdTr;
 	}
 
 }
