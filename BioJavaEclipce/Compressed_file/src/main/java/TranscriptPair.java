@@ -1,4 +1,5 @@
 
+
 public class TranscriptPair {
 	
 	private Transcript firstTranscript, secondTranscript;

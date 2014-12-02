@@ -24,6 +24,9 @@ public class Assignment {
 				matrix.getSecondTranscriptome().getAllSeq().size();
 	}
 	
+	// Fast assigment for results
+	// just for look to aproximate results
+	
 	public Assignment (Transcriptome tr1, 
 			Transcriptome tr2,			
 			Assignment asgn1,
