@@ -6,47 +6,216 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Scanner;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.PosixParser;
+
 public class TrainingDataGenerator {
 
 	public static void main(String[] args) throws Exception {
 		
 		
         try {
-        	// topBound
-        	double topBound = 0.85;
-        	// bottomBound
-        	double bottomBound = 0.35;
         	/*
-        	 * <level> - For part of final transcriptome without using ML.
-        	 * When we search similar transcripts in two assemblies,
-        	 * we choose transcripts, which similar with more than <level>
-        	 * value in our measure
-        	 */
+        	double topBound = 0.85;
+        	double bottomBound = 0.35;
         	double level = 0.6;
+			int maxCountOfSet1 = 100000;
+			double percentage = 0.03;
+			String classifier = "RF";
+			String params = "-I 100 -K 100 -S 1 -depth 0 -num-slots 20";
+        	String mode = "refine";
+        	int numOfFolds = 10;
+        	*/
+
+			//_________________COMAND_LINE_PARSER______________________
+        	
+        	String[] arguments;
+			
+        	/*
+			 * Mode: "CV", "refine" or "getClassifiers"
+			 */
+        	String mode = new String();
+        	/* 
+        	 * topBound
+        	 */
+        	double topBound = 0;
+        	/*
+        	 *  bottomBound
+        	 */
+        	double bottomBound = 0;
         	/*
         	 * <maxCountOfSet1> - max number of good transcripts 
         	 * Need to control size of dataset for learning
         	 * classifiers
         	 */
-			int maxCountOfSet1 = 100000;
+        	int maxCountOfSet1 = 0;
+        	/*
+			 * Classifier and params for it
+			 * 
+			 * Examples:
+			 * for SVM:
+			 * "-C 1.0 -L 0.0010 -P 1.0E-12 -N 0 -V -1 -W 1 -K \"weka.classifiers.functions.supportVector.PolyKernel -C 250007 -E 1.0" + "\""
+			 * for RF:
+			 * "-I 100 -K 100 -S 1 -depth 0 -num-slots 20"
+			 */
+			String classifier = new String();
+			String params = new String();
 			/*
+        	 * <level> - For part of final transcriptome without using ML.
+        	 * When we search similar transcripts in two assemblies,
+        	 * we choose transcripts, which similar with more than <level>
+        	 * value in our measure
+        	 */
+	        double level = 0;
+	        /*
 			 * <percentage> - in ML part we add transcripts, which have 
 			 * part more than <percentage> of good reads
 			 */
-			double percentage = 0.03;
+			double percentage = 0;
 			/*
-			 * Classifier and params for it
-			 */
-			String classifier = "RF";
-			String params = "-I 100 -K 100 -S 1 -depth 0 -num-slots 20";
-			/*
-			 * Mode: "CV", "refine" or "getClassifiers"
-			 */
-        	String mode = "refine";
-        	/*
 			 * For CV num of folds for k-fold cv
 			 */
-        	int numOfFolds = 10;
+			int numOfFolds = 0;
+        	
+			/*
+			 * Command line params
+			 * обязательные:
+			 * --md <String> - mode ("CV", "bild" or "getClassifiers")
+			 * --tb <double> - top bound
+			 * --bb <double> - bottom bound
+			 * --maxcount <int> - max cound of reads for good classes
+			 * --cl <String> - type of classifier ("RF", "SVM" or "AD")
+			 * --opt <String> - options for classifier (in weka)
+			 * обязательные для режима "bild":
+			 * --lvl <Double> - level for add similar transcripts
+			 * --ps <Double> - part of good reads in transcript to add transcript
+			 * обязательные для режима "CV":
+			 * -f <int> - num of folds for CV
+			 * 
+			 * Params 
+			 * --md bild --tb 0.85 --bb 0.35 --maxCount 100000 --cl RF --opt "-I 100 -K 100 -S 1 -depth 0 -num-slots 20" --lvl 0.6 --ps 0.03
+			 * --md CV --tb 0.85 --bb 0.35 --maxCount 100000 --cl RF --opt "-I 100 -K 100 -S 1 -depth 0 -num-slots 20" -f 10
+			 */
+			
+        	Options opts = new Options();
+        	
+        	Option md = new Option("md", "mode", true, "mode: \"CV\", "
+        			+ "\"refine\" or \"bild\""); 
+        	md.setArgs(1);
+        	opts.addOption(md);
+        	
+        	Option tb = new Option("tb", "topBound", true, "top bound "
+        			+ "(for classification)"); 
+        	tb.setArgs(1);
+        	opts.addOption(tb);
+        	
+        	Option bb = new Option("bb", "bottomBound", true, "bottom "
+        			+ "bound (for classification)"); 
+        	bb.setArgs(1);
+        	opts.addOption(bb);
+        	
+        	Option maxCount = new Option("maxCount", true, "max count "
+        			+ "of reads for class of good reads "
+        			+ "(for classification)"); 
+        	maxCount.setArgs(1);
+        	opts.addOption(maxCount);
+        	
+        	Option cl = new Option("cl", "classifier", true, "type of "
+        			+ "classifier "
+        			+ "(for classification)"); 
+        	cl.setArgs(1);
+        	opts.addOption(cl);
+        	
+        	Option opt = new Option("opt", "options", true, "options "
+        			+ "for classifier"); 
+        	opt.setArgs(30);
+        	opts.addOption(opt);
+        	
+        	Option lvl = new Option("lvl", "level", true, "level for "
+        			+ "add similar transcripts"); 
+        	lvl.setArgs(1);
+        	lvl.setOptionalArg(true);
+        	opts.addOption(lvl);
+        	
+        	Option pr = new Option("ps", "percentage", true, "part of "
+        			+ "good reads in transcript to add transcript"); 
+        	pr.setArgs(1);
+        	pr.setOptionalArg(true);
+        	opts.addOption(pr);
+        	
+        	Option folds = new Option("f", "folds", true, "num of folds for CV"); 
+        	folds.setArgs(1);
+        	folds.setOptionalArg(true);
+        	opts.addOption(folds);
+        	
+        	
+        	
+        	CommandLineParser cmdLinePosixParser = new PosixParser();
+        	CommandLine commandLine = cmdLinePosixParser.parse(opts, args);
+        	
+        	if (commandLine.hasOption("md")) {
+        		arguments = commandLine.getOptionValues("md");
+        		mode = arguments[0];
+        	} else {
+        		System.out.println("Set option \"mode\"!");
+        	}
+        	if (commandLine.hasOption("tb")) {
+        		arguments = commandLine.getOptionValues("tb");
+            	topBound = Double.parseDouble(arguments[0]);
+        		
+        	} else {
+        		System.out.println("Set option \"topBound\"!");
+        	}
+        	if (commandLine.hasOption("bb")) {
+        		arguments = commandLine.getOptionValues("bb");
+            	bottomBound = Double.parseDouble(arguments[0]);
+        	} else {
+        		System.out.println("Set option \"bottomBound\"!");
+        	}
+        	if (commandLine.hasOption("maxCount")) {
+        		arguments = commandLine.getOptionValues("maxCount");
+            	maxCountOfSet1 = Integer.parseInt(arguments[0]);
+        	} else {
+        		System.out.println("Set option \"maxCount\"!");
+        	}
+        	if (commandLine.hasOption("cl")) {
+        		arguments = commandLine.getOptionValues("cl");
+    			classifier = arguments[0];
+        	} else {
+        		System.out.println("Set option \"classifier\"!");
+        	}
+        	if (commandLine.hasOption("opt")) {
+        		arguments = commandLine.getOptionValues("opt");
+        		params = arguments[0];
+        	} else {
+        		System.out.println("Set option \"options\"!");
+        	}
+        	if (commandLine.hasOption("lvl")) {
+        		arguments = commandLine.getOptionValues("lvl");
+        		level = Double.parseDouble(arguments[0]);
+        	} else if (mode.compareTo("bild") == 0){
+        		System.out.println("Set option \"level\"!");
+        	}
+        	if (commandLine.hasOption("ps")) {
+        		arguments = commandLine.getOptionValues("ps");
+        		percentage = Double.parseDouble(arguments[0]);
+        	} else if (mode.compareTo("bild") == 0){
+        		System.out.println("Set option \"options\"!");
+        	}
+        	if (commandLine.hasOption("f")) {
+        		arguments = commandLine.getOptionValues("f");
+        		numOfFolds = Integer.parseInt(arguments[0]);
+        	} else if (mode.compareTo("CV") == 0){
+        		System.out.println("Set option \"options\"!");
+        	}
+        	
+        	
+			
+			
+			//_________________________________________________________
 			
         	String fileOfTranscript1 = "/home/volta/another/test/" +
         			"Data/Assemblies/Oases.fa";
