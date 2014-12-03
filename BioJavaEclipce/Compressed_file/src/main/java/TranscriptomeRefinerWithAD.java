@@ -56,7 +56,7 @@ public class TranscriptomeRefinerWithAD implements TranscriptomeRefiner {
 		else
 			maxSize = transcriptome2.getAllSeq().size();
 		
-		Transcriptome MLtr = ad.MLLibRefine (trAssignment1,
+		Transcriptome MLtr = ad.getGoodTranscripts (trAssignment1,
 				trAssignment2,
 				tr1,
 				tr2,
@@ -69,7 +69,7 @@ public class TranscriptomeRefinerWithAD implements TranscriptomeRefiner {
 		ClassicAssemblerSimilarityRefiner asssim = 
 				new ClassicAssemblerSimilarityRefiner();
 		
-		Transcriptome AStr = asssim.asmSimRefine(asgn, level);
+		Transcriptome AStr = asssim.getSimilarTranscripts(asgn, level);
 		
 		if (AStr.getAllSeq().size() >= maxSize)
 			return AStr;

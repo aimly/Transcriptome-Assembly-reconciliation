@@ -78,7 +78,7 @@ public class Vectorizer {
 			TranscriptomeAssembly tr2,
 			double topBound,
 			double bottomBound,
-			int maxCountOfSet1) throws IOException, ClassNotFoundException{
+			int maxCountOfSet1) throws Exception{
 		System.out.println("________________________");
 		System.out.println("Initialization of Vectorizer with manz params");
 		

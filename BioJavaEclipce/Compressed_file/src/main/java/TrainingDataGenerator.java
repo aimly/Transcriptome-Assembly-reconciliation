@@ -70,7 +70,8 @@ public class TrainingDataGenerator {
         		new Transcriptome(Fasta.read(fileOfTranscriptome1, 
         				"fasta", "sequences"), 
         				workWithFile.getNameOfFile(fileOfTranscriptome1));
-        Transcriptome tr2 = 
+        
+    	Transcriptome tr2 = 
         		new Transcriptome(Fasta.read(fileOfTranscriptome2, 
         				"fasta", "sequences"), 
         				workWithFile.getNameOfFile(fileOfTranscriptome2));
@@ -81,6 +82,10 @@ public class TrainingDataGenerator {
         
         System.out.println("Succsessful reading "
         		+ "of transcriptomes");
+        
+        Transcriptome tr55 = ( Transcriptome ) workWithFile.writeToFile("ref", ref);
+        System.out.println(tr55.getAllSeq().size());
+        
         Reads rd = 
         		new Reads (Fasta.read(fileOfReads, 
         				"fastq", "sequences"));

@@ -19,7 +19,7 @@ public class GoodReadsCreator {
 			TranscriptomeAssembly tr2,
 			double topBound,
 			double bottomBound,
-			int maxCountOfSet1) throws IOException, ClassNotFoundException{
+			int maxCountOfSet1) throws Exception, ClassNotFoundException{
 
 		System.out.println("______________________________");
 		System.out.println("Start creating good reads ");

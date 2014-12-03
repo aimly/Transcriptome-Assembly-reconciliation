@@ -3,10 +3,14 @@ import java.io.File;
 
 public class WorkWithFiles {
 	private String pathToWorkFiles;
-	private static String trPath = "Data/Assemblies/";
-	private static String refPath = "Data/References/";
-	private static String readsPath = "Data/Reads/";
-	private static String depPath = "Data/Сomparison/";
+	private final String trPath = "Data".concat(System.getProperty("file.separator"))
+			.concat("Assemblies").concat(System.getProperty("file.separator"));
+	private final String refPath = "Data".concat(System.getProperty("file.separator"))
+			.concat("References").concat(System.getProperty("file.separator"));
+	private final String readsPath = "Data".concat(System.getProperty("file.separator"))
+			.concat("Reads").concat(System.getProperty("file.separator"));
+	private final String depPath = "Data".concat(System.getProperty("file.separator"))
+			.concat("Comparison").concat(System.getProperty("file.separator"));
 
 	
 
@@ -44,5 +48,10 @@ public class WorkWithFiles {
 	
 	public String getNameOfFile (String fileName){
 		return fileName.split("\\/")[fileName.split(System.getProperty("file.separator")).length - 1].split("\\.")[0];
+	}
+	
+	public Object writeToFile(String typeOfClass, Object obj){
+		System.out.println(obj.getClass().toString());
+		return obj;
 	}
 }

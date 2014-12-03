@@ -58,10 +58,6 @@ public class Transcriptome implements Serializable{
 		return this.nameOfSet;
 	}
 	
-	public HashMap<String,String> getMap () {
-		return transcripts;
-	}
-	
 	public void addTranscript (Transcript transcript) throws IOException{
 		transcripts.put(transcript.getData(), 
 				transcript.getName());
@@ -77,7 +73,8 @@ public class Transcriptome implements Serializable{
 	}
 	
 	public void merge (Transcriptome tr2){
-		transcripts.putAll(tr2.getMap());
+		for (String seq : tr2.getAllSeq())
+			this.transcripts.put(seq, tr2.getName(seq));
 	}
 	
 	public void setTranscriptomeName(String name){

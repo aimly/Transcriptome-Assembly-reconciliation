@@ -1,5 +1,5 @@
 public interface MllLibRefiner {
-	public Transcriptome MLLibRefine(Assignment trAssignment1,
+	public Transcriptome getGoodTranscripts(Assignment trAssignment1,
 			Assignment trAssignment2,
 			TranscriptomeAssembly tr1,
 			TranscriptomeAssembly tr2,

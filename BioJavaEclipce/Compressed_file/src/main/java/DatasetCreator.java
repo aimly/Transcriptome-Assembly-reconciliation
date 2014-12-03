@@ -34,7 +34,7 @@ public class DatasetCreator {
 			double topBound,
 			double bottomBound, 
 			Vectorizer vectorize,
-			int maxCountOfSet1) throws IOException, ClassNotFoundException{
+			int maxCountOfSet1) throws Exception{
 		
 		System.out.println("________________________");
 		System.out.println("Dataset creating");
@@ -126,7 +126,7 @@ public class DatasetCreator {
 			double topBound,
 			double bottomBound, 
 			Vectorizer vectorize,
-			int maxCountOfSet1) throws IOException, ClassNotFoundException{
+			int maxCountOfSet1) throws Exception{
 		
 		System.out.println("________________________");
 		System.out.println("Dataset creating");
@@ -151,7 +151,7 @@ public class DatasetCreator {
 			TranscriptomeAssembly tr2,
 			int topBound,
 			int bottomBound,
-			int maxCountOfSet1) throws IOException, ClassNotFoundException{
+			int maxCountOfSet1) throws Exception{
 		
 		ReadsForTraining training = 
 				GoodReadsCreator.createSet(trAssignment1, 
