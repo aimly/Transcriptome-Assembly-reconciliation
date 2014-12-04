@@ -2,5 +2,5 @@ import java.io.IOException;
 
 
 public interface AssembliesSimilarityRefiner {
-	public Transcriptome getSimilarTranscripts (Assignment asgn, double level)throws IOException;
+	public Transcriptome getSimilarTranscripts (Assignment asgn, Params params)throws IOException;
 }

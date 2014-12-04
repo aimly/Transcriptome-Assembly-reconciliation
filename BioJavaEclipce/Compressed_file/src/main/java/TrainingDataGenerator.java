@@ -12,6 +12,9 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
 
+import weka.classifiers.Classifier;
+
+
 public class TrainingDataGenerator {
 
 	public static void main(String[] args) throws Exception {
@@ -83,8 +86,6 @@ public class TrainingDataGenerator {
         System.out.println("Succsessful reading "
         		+ "of transcriptomes");
         
-        Transcriptome tr55 = ( Transcriptome ) workWithFile.writeToFile("ref", ref);
-        System.out.println(tr55.getAllSeq().size());
         
         Reads rd = 
         		new Reads (Fasta.read(fileOfReads, 
@@ -101,7 +102,14 @@ public class TrainingDataGenerator {
         		fileOfReads,
         		fileOfTranscriptome2);
         
-      
+        
+        WorkMode workMode = ClassCreator.getWorkMode(prms.getMode());
+        Classifier classif = 
+        		ClassCreator.getClassifier(prms.getClassifier(), 
+        				prms.getParamsForClassifier());
+        AssembliesSimilarityRefiner simref = ClassCreator.getSimilarityRefiner();
+        
+        
         
         
         SimilarityMatrix simMatForTr1andTr2 = 
@@ -118,7 +126,11 @@ public class TrainingDataGenerator {
         		new SimilarityMatrix(tr2, ref, "NW");
         Assignment asForTr2andRef = new 
         		Assignment(simMatForTr2andRef);
-   
+        
+        ReadsForTraining reads = GoodReadsCreator.createSet(asForTr1andRef, asForTr2andRef, linksTr1, linksTr2, topBound, bottomBound, maxCountOfSet1);
+        
+        WorkClass.work(simref, classif, prms, workMode, linksTr1, linksTr2, reads, asForTr1andTr2);
+        /*
         Transcriptome res = new Transcriptome("results");
         if(mode.compareTo("bild") == 0 || mode.compareTo("getClassifiers") == 0){
             if (classifier.compareTo("RF") == 0){
@@ -284,9 +296,11 @@ public class TrainingDataGenerator {
 	        		  + resSim.getAccuracy());
 	          System.out.println("Count Proportion: " 
 	        		  + resSim.getCountProportion());
-	          System.out.println("");
+	          System.out.println(""); 
+        }	          
+	          */
 	          System.out.println("That's it:)");
-        }
+
        
        
 	}

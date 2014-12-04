@@ -13,6 +13,10 @@ public class ReadsForTraining {
 		
 	}
 	
+	public ReadsForTraining() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public ArrayList<Read> getReadsForClass1() {
 		return this.readsForClass1;
 	}

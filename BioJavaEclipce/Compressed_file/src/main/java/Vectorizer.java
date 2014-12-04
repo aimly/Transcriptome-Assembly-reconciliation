@@ -42,33 +42,7 @@ public class Vectorizer {
 	
 	// Constructor with data to create model vector
 	
-	public Vectorizer (ArrayList<Read> bad) throws IOException{
-		
-		System.out.println("________________________");
-		System.out.println("Initialize vectorizer with arraylist in params");
-		
-		for (Read index : bad){
-			
-			Reader reader = new StringReader(index.getData());
-			NGramTokenizer gramTokenizer = 
-					new NGramTokenizer(reader, 1, 3);
-			CharTermAttribute charTermAttribute = 
-					gramTokenizer.addAttribute(CharTermAttribute.class);
-			
-			gramTokenizer.reset();
-			
-			while (gramTokenizer.incrementToken()) {
-			    String token = charTermAttribute.toString();
-			    if (token != null){
-			    	vector.put(token, 0);
-			    }
-			}
-			
-			gramTokenizer.close();
-		}
-		this.status = "full";
-		System.out.println("________________________");
-	}
+
 	// Тот самый конструктор, написанный через жопу
 	// Обязательно переписать!
 	
@@ -156,23 +130,53 @@ public class Vectorizer {
 	
 	// Method - vectorise String
 	
-	public HashMap<String, Integer> vectorize (String str) 
-			throws IOException{
-		if (this.status == "empty"){
-			System.out.println("Vectorizer is empty!");
-			return null;
-		}
+
+
+	
+
+	public String getStatus () {
 		
 		if (this.status == null){
 			System.out.println("Vectorizer is NULL!");
-			return null;
+			return "null";
 		}
+		
+		return this.status;
+	}
+	
+	////////////////////////////////////////////////////////////////
+	public Vectorizer (ArrayList<Read> reads) throws IOException{
+
+		for (Read index : reads){
+			
+			NGramTokenizer gramTokenizer = 
+					new NGramTokenizer(new StringReader(index.getData()), 
+							2, 4);
+			CharTermAttribute charTermAttribute = 
+					gramTokenizer.addAttribute(CharTermAttribute.class);
+			
+			gramTokenizer.reset();
+			
+			while (gramTokenizer.incrementToken()) {
+			    String token = charTermAttribute.toString();
+			    if (token != null){
+			    	vector.put(token, 0);
+			    }
+			}
+			
+			gramTokenizer.close();
+		}
+		
+	}
+	
+
+	public HashMap<String, Integer> vectorize (String str) 
+			throws IOException{
 		
 		HashMap<String, Integer> vect = this.copyOfVector();
 		
-		Reader reader = new StringReader(str);
 		NGramTokenizer gramTokenizer = 
-				new NGramTokenizer(reader, 1, 3);
+				new NGramTokenizer(new StringReader(str), 2, 4);
 		CharTermAttribute charTermAttribute = 
 				gramTokenizer.addAttribute(CharTermAttribute.class);
 		
@@ -191,27 +195,7 @@ public class Vectorizer {
 	// This function is to create attributes in DataCreator
 	
 	public HashMap<String, Integer> getVector () {
-		
-		if (this.status == "empty"){
-			System.out.println("Vectorizer is empty!");
-			return null;
-		}
-		
-		if (this.status == null){
-			System.out.println("Vectorizer is NULL!");
-			return null;
-		}
-		
 		return vector;
 	}
 	
-	public String getStatus () {
-		
-		if (this.status == null){
-			System.out.println("Vectorizer is NULL!");
-			return "null";
-		}
-		
-		return this.status;
-	}
 }

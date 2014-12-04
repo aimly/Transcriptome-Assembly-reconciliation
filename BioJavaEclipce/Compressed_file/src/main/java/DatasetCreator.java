@@ -10,24 +10,10 @@ import weka.core.Instances;
 public class DatasetCreator {
 	
 	// from vector of features in HashMap format create class Instance (Weka)
+	private Vectorizer vectorizer;
 	
-	private static DenseInstance createInstance (HashMap<String, Integer> instanceInMap, double classOfStr) {
-		
-		double[] vals = new double[instanceInMap.size() + 1];
-		int i = 0;
-		
-		for (String index : instanceInMap.keySet()){
-			vals[i] = instanceInMap.get(index);
-			i++;
-		}
-		
-		vals[i] = classOfStr;
-		
-		DenseInstance data = new DenseInstance(1.0, vals);
-		return data;
-	}
-	
-	public static PairOfInstances createInstances (Assignment trAssignment1,
+
+	public static PairOfDataSets createInstances (Assignment trAssignment1,
 			Assignment trAssignment2,
 			TranscriptomeAssembly tr1,
 			TranscriptomeAssembly tr2,
@@ -102,7 +88,7 @@ public class DatasetCreator {
 		System.out.println("Size of set1: " + set1.size());
 		System.out.println("Size of set2 : " + set2.size());
 		System.out.println("________________________");
-		PairOfInstances pair = new PairOfInstances(data1, data2);
+		PairOfDataSets pair = new PairOfDataSets(data1, data2);
 		return pair;
 	}
 	
@@ -130,7 +116,7 @@ public class DatasetCreator {
 		
 		System.out.println("________________________");
 		System.out.println("Dataset creating");
-		PairOfInstances pair = DatasetCreator.createInstances (trAssignment1,
+		PairOfDataSets pair = DatasetCreator.createInstances (trAssignment1,
 				trAssignment2,
 				tr1,
 				tr2,
@@ -211,5 +197,75 @@ public class DatasetCreator {
 		data.setClassIndex(data.numAttributes() - 1);
 		return data;
 	}
+///////////////////////////////////////////////////////////////////////////////////
+	public DatasetCreator(ReadsForTraining sets) throws IOException{
+		
+		ArrayList<Read> set = sets.getReadsForClass1();
+		set.addAll(sets.getReadsForClass2());
+		vectorizer = new Vectorizer (set);
+	
+	}
+	
+	public PairOfDataSets create(ReadsForTraining sets) throws Exception {
+		
+		if (vectorizer == null){
+			System.out.println("Fail! DatasetCreator isn't initialised");
+			return null;
+		}
+		
+		
+		Instances data1 = this.createInstance(sets.getReadsForClass1(), 0);
+		Instances data2 = this.createInstance(sets.getReadsForClass2(), 1);
+		
+		PairOfDataSets pair = new PairOfDataSets(data1, data2);
+		return pair;
+	}
+	
+	public Instances createInstance(ArrayList<Read> set, int typeOfClass) throws IOException{
+		
+		if (vectorizer == null){
+			System.out.println("Fail! DatasetCreator isn't initialised");
+			return null;
+		}
+		
+		ArrayList<Attribute> atts = new ArrayList<Attribute>();
+		for (String index : vectorizer.getVector().keySet()){
+			atts.add(new Attribute(index));
+		}
+		
+		ArrayList<String> attVals = new ArrayList<String>();
+		for (int j = 0; j < 2; j++)
+		  attVals.add("class" + (j+1));
+		atts.add(new Attribute("class", attVals));
+		
+		
+		Instances data = new Instances("MyRelation", atts, 0);
+		
+		for (Read index : set){
+			HashMap<String, Integer> strToHashMap = vectorizer.vectorize(index.getData());
+			data.add(createInstance(strToHashMap, typeOfClass));
+		}
+		data.setClassIndex(data.numAttributes() - 1);
+		return data;
+		
+	}
+	
+	private static DenseInstance createInstance (HashMap<String, Integer> instanceInMap, double classOfStr) {
+		
+		double[] vals = new double[instanceInMap.size() + 1];
+		int i = 0;
+		
+		for (String index : instanceInMap.keySet()){
+			vals[i] = instanceInMap.get(index);
+			i++;
+		}
+		
+		vals[i] = classOfStr;
+		
+		DenseInstance data = new DenseInstance(1.0, vals);
+		return data;
+	}
+	
+
 	
 }
