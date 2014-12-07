@@ -206,7 +206,7 @@ public class DatasetCreator {
 	
 	}
 	
-	public PairOfDataSets create(ReadsForTraining sets) throws Exception {
+	public Instances create(ReadsForTraining sets) throws Exception {
 		
 		if (vectorizer == null){
 			System.out.println("Fail! DatasetCreator isn't initialised");
@@ -217,8 +217,12 @@ public class DatasetCreator {
 		Instances data1 = this.createInstance(sets.getReadsForClass1(), 0);
 		Instances data2 = this.createInstance(sets.getReadsForClass2(), 1);
 		
-		PairOfDataSets pair = new PairOfDataSets(data1, data2);
-		return pair;
+		System.out.println("data1: " + data1.size());
+		System.out.println("data2: " + data2.size());
+		
+		data1.addAll(data2);
+		System.out.println("DataSum: " + data1.size());
+		return data1;
 	}
 	
 	public Instances createInstance(ArrayList<Read> set, int typeOfClass) throws IOException{

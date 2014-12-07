@@ -1,24 +1,29 @@
 import weka.classifiers.Classifier;
+import weka.core.Instances;
 
 
 public class WorkClass {
 	public static void work(AssembliesSimilarityRefiner simref,
-			Classifier classifier,
+			Classifiers classifiers,
 			Params params,
 			WorkMode workMode,
 			TranscriptomeAssembly tr1,
 			TranscriptomeAssembly tr2,
-			ReadsForTraining reads,
+			PairOfReadsForTraining pair,
 			Assignment asgn) throws Exception{
-		DatasetCreator datasetCreator = new DatasetCreator(reads);
-		PairOfDataSets data = datasetCreator.create(reads);
+		
+		WorkWithData dataForClassifier1 = new WorkWithData(pair.getReadsForTr1());
+		
+		
+		WorkWithData dataForClassifier2 = new WorkWithData(pair.getReadsForTr2());
+		
 		workMode.work(simref, 
-				classifier, 
-				data, 
-				datasetCreator, 
+				classifiers, 
 				params,
 				tr1,
+				dataForClassifier1,
 				tr2,
+				dataForClassifier2,
 				asgn);
 	};
 }

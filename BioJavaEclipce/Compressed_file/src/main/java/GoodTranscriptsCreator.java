@@ -10,8 +10,7 @@ public class GoodTranscriptsCreator {
 	public static Transcriptome getTranscripts(Classifier classifier,
 			DatasetCreator datasetCreator, 
 			Params params,
-			TranscriptomeAssembly tr1,
-			TranscriptomeAssembly tr2) throws Exception {
+			TranscriptomeAssembly tr1) throws Exception {
 		
 		int i = 0;
 		
@@ -19,7 +18,7 @@ public class GoodTranscriptsCreator {
 		
 		Transcriptome results = new Transcriptome("Good");
 		for (Transcript indexOfTr : tr1.getAllTranscripts()){
-			if (GoodTranscriptsCreator.isGood(indexOfTr, tr2, 
+			if (GoodTranscriptsCreator.isGood(indexOfTr, tr1, 
 					datasetCreator, classifier, percentage)){
 				results.addTranscript(indexOfTr);
 				i++;
@@ -38,7 +37,6 @@ public class GoodTranscriptsCreator {
 		ArrayList<Read> set = trAssem.getReadsOfTr(tr);
 		Instances dataOfReads = 
 				datasetCreator.createInstance(set, 0);
-		
 		double count = 0;
 		double goodCount = 0;
 		
@@ -46,7 +44,11 @@ public class GoodTranscriptsCreator {
 			goodCount += classifier.classifyInstance(ind);
 			count++;
 		}
-	
+		/*
+		System.out.println("Percentage: " + i);
+		System.out.println("count: " + count);
+		System.out.println("goodcount " + goodCount);  
+		*/
 		return ((count - goodCount)/count > percentage);
 	}
 }

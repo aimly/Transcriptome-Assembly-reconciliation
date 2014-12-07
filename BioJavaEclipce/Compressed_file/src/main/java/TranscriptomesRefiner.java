@@ -5,22 +5,22 @@ public class TranscriptomesRefiner  implements WorkMode{
 	
 	@Override
 	public void work (AssembliesSimilarityRefiner simref,
-			Classifier classifier,
-			PairOfDataSets data,
-			DatasetCreator datasetCreator,
+			Classifiers classifiers,
 			Params params,
 			TranscriptomeAssembly tr1,
+			WorkWithData dataForClassifier1,
 			TranscriptomeAssembly tr2,
+			WorkWithData dataForClassifier2,
 			Assignment asgn) throws Exception {
 		
 		Transcriptome transcriptome1 = simref.getSimilarTranscripts(asgn, params);
 		
 		Transcriptome transcriptome21 = 
-				MLRefiner.createTranscript(classifier, 
-						data.getDatasetForFirstTranscriptome(), datasetCreator, params, tr1, tr2);
+				MLRefiner.createTranscript(classifiers.getClassifier1(), 
+						params, dataForClassifier1, tr1);
 		Transcriptome transcriptome22 = 
-				MLRefiner.createTranscript(classifier, 
-						data.getDatasetForSecondTranscriptome(), datasetCreator, params, tr2, tr1);
+				MLRefiner.createTranscript(classifiers.getClassifier2(), 
+						params, dataForClassifier2, tr2);
 		transcriptome21.merge(transcriptome22);
 		
 		transcriptome1.merge(transcriptome21);

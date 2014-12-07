@@ -75,7 +75,7 @@ public class Transcriptome implements Serializable{
 	public void merge (Transcriptome tr2){
 		for (String seq : tr2.getAllSeq())
 			this.transcripts.put(seq, tr2.getName(seq));
-	}
+		}
 	
 	public void setTranscriptomeName(String name){
 		this.nameOfSet = name;

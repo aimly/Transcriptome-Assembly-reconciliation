@@ -6,18 +6,20 @@ import weka.core.Instances;
 public class MLRefiner {
 
 	public static Transcriptome createTranscript(Classifier classifier,
-			Instances dataset,
-			DatasetCreator datasetCreator,
 			Params params,
-			TranscriptomeAssembly tr1,
-			TranscriptomeAssembly tr2) throws Exception {
-		classifier.buildClassifier(dataset);
+			WorkWithData dataForClassifier,
+			TranscriptomeAssembly tr1) throws Exception {
+		
+		System.out.println("Bilding classifier");
+		System.out.println("DataSize: " + dataForClassifier.getData().size());
+		classifier.buildClassifier(dataForClassifier.getData());
+		System.out.println("Classifier bilded");
+		
 		Transcriptome tr = 
 				GoodTranscriptsCreator.getTranscripts(classifier, 
-						datasetCreator, 
+						dataForClassifier.getDatasetCreator(), 
 						params,
-						tr1,
-						tr2);
+						tr1);
 		return tr;
 	}
 

@@ -104,8 +104,8 @@ public class TrainingDataGenerator {
         
         
         WorkMode workMode = ClassCreator.getWorkMode(prms.getMode());
-        Classifier classif = 
-        		ClassCreator.getClassifier(prms.getClassifier(), 
+        Classifiers classifiers = 
+        		ClassCreator.getClassifiers(prms.getClassifier(), 
         				prms.getParamsForClassifier());
         AssembliesSimilarityRefiner simref = ClassCreator.getSimilarityRefiner();
         
@@ -127,10 +127,12 @@ public class TrainingDataGenerator {
         Assignment asForTr2andRef = new 
         		Assignment(simMatForTr2andRef);
         
-        ReadsForTraining reads = GoodReadsCreator.createSet(asForTr1andRef, asForTr2andRef, linksTr1, linksTr2, topBound, bottomBound, maxCountOfSet1);
+        ReadsForTraining reads1 = GoodReadsCreator.createGoodReadsSet(asForTr1andRef, asForTr2andRef, linksTr1, linksTr2, prms, workWithFile);
+        ReadsForTraining reads2 = GoodReadsCreator.createGoodReadsSet(asForTr2andRef, asForTr1andRef, linksTr2, linksTr1, prms, workWithFile);
         
-        WorkClass.work(simref, classif, prms, workMode, linksTr1, linksTr2, reads, asForTr1andTr2);
-        /*
+        PairOfReadsForTraining pair = new PairOfReadsForTraining(reads1, reads2);
+        
+        WorkClass.work(simref, classifiers, prms, workMode, linksTr1, linksTr2, pair, asForTr1andTr2); /*
         Transcriptome res = new Transcriptome("results");
         if(mode.compareTo("bild") == 0 || mode.compareTo("getClassifiers") == 0){
             if (classifier.compareTo("RF") == 0){

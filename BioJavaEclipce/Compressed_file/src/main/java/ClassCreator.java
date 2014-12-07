@@ -14,21 +14,30 @@ public class ClassCreator {
 		return workMode;
 	}
 	
-	public static Classifier getClassifier (String typeOfClassifier, String options) throws Exception{
-		Classifier classifier = null;
+	public static Classifiers getClassifiers (String typeOfClassifier, String options) throws Exception{
+		Classifiers classifiers = null;
+		Classifier classifier1 = null;
+		Classifier classifier2 = null;
 		if (typeOfClassifier.compareTo("RF") == 0){
-			classifier = new RandomForest();
-			((RandomForest) classifier).setOptions(weka.core.Utils.splitOptions(options));
+			classifier1 = new RandomForest();
+			classifier2 = new RandomForest();
+			((RandomForest) classifier1).setOptions(weka.core.Utils.splitOptions(options));
+			((RandomForest) classifier2).setOptions(weka.core.Utils.splitOptions(options));
 		}
 		if (typeOfClassifier.compareTo("SVM") == 0){
-			classifier = new SMO();
-			((SMO) classifier).setOptions(weka.core.Utils.splitOptions(options));
+			classifier1 = new SMO();
+			classifier2 = new SMO();
+			((SMO) classifier1).setOptions(weka.core.Utils.splitOptions(options));
+			((SMO) classifier2).setOptions(weka.core.Utils.splitOptions(options));
 		}
 		if (typeOfClassifier.compareTo("AD") == 0){
-			classifier = new LibSVM();
-			((LibSVM) classifier).setOptions(weka.core.Utils.splitOptions(options));
+			classifier1 = new LibSVM();
+			classifier2 = new LibSVM();
+			((LibSVM) classifier1).setOptions(weka.core.Utils.splitOptions(options));
+			((LibSVM) classifier2).setOptions(weka.core.Utils.splitOptions(options));
 		}
-		return classifier;
+		classifiers = new Classifiers (classifier1, classifier2);
+		return classifiers;
 	}
 	
 	public static AssembliesSimilarityRefiner getSimilarityRefiner (){

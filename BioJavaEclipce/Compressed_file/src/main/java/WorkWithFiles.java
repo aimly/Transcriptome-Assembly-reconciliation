@@ -1,4 +1,10 @@
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 
 public class WorkWithFiles {
@@ -11,6 +17,8 @@ public class WorkWithFiles {
 			.concat("Reads").concat(System.getProperty("file.separator"));
 	private final String depPath = "Data".concat(System.getProperty("file.separator"))
 			.concat("Comparison").concat(System.getProperty("file.separator"));
+	private final String GoodReadsPath = "Data".concat(System.getProperty("file.separator"))
+			.concat("Good reads").concat(System.getProperty("file.separator"));
 
 	
 
@@ -50,8 +58,88 @@ public class WorkWithFiles {
 		return fileName.split("\\/")[fileName.split(System.getProperty("file.separator")).length - 1].split("\\.")[0];
 	}
 	
-	public Object writeToFile(String typeOfClass, Object obj){
-		System.out.println(obj.getClass().toString());
+	public void writeToFile(String typeOfObj, 
+			Object obj, String tr1Name, 
+			String tr2Name, double topBound, 
+			double bottomBound) throws Exception{
+		ObjectOutputStream out = null;
+		String nameOfFile = WorkWithFiles.getNameOfFile(typeOfObj, 
+				tr1Name, tr2Name, topBound, bottomBound);
+		if (typeOfObj.compareTo("goodReads") == 0){
+			out = WorkWithFiles.getOutputStream(pathToWorkFiles, 
+							pathToWorkFiles + GoodReadsPath,
+							nameOfFile);
+		}
+		out.writeObject(obj);
+	}
+
+	public Object read(String typeOfObj, String tr1Name, 
+			String tr2Name, double topBound, 
+			double bottomBound) throws Exception {
+		
+		String filename = WorkWithFiles.getNameOfFile(typeOfObj, 
+				tr1Name, tr2Name, topBound, bottomBound);
+		
+		Object obj = new Object();
+		
+		if (typeOfObj.compareTo("goodReads") == 0){
+			ObjectInputStream in = WorkWithFiles.getInputStream(pathToWorkFiles + 
+							GoodReadsPath + filename);
+			if (in == null)
+				return new ReadsForTraining();
+			else
+				obj = (ReadsForTraining)in.readObject();
+		}
+		
 		return obj;
+	}
+	
+	private static ObjectInputStream getInputStream (String fileName) throws Exception{
+		File file = new File(fileName);
+		if (!file.exists())
+			return null;
+		FileInputStream fis = new FileInputStream(file);
+		ObjectInputStream in = new ObjectInputStream(fis);
+		return in;
+	}
+	
+	private static String getNameOfFile(String type, String tr1Name, 
+			String tr2Name, double topBound, 
+			double bottomBound){
+		String name = new String();
+		String str = WorkWithFiles.addSuffix(tr1Name, 
+				tr2Name, topBound, 
+				bottomBound);
+		if (type.compareTo("goodReads") == 0){
+			name = "Good reads ";
+			name = name.concat(str);
+		}
+		return name;
+	}
+	
+	private static String addSuffix(String tr1Name, String tr2Name,
+			double topBound, double bottomBound) {
+		String str = "";
+		str = str.concat(tr1Name + " and " + tr2Name + 
+				" tb " + topBound +
+				" bb " + bottomBound);
+		return str;
+	}
+
+	private static ObjectOutputStream getOutputStream (String basePath,
+			String path, String fileName) throws IOException {
+		File file = new File(path + fileName);
+		FileOutputStream fis;
+		try {
+			fis = new FileOutputStream(file);
+			ObjectOutputStream out = new ObjectOutputStream(fis);
+			return out;
+		} catch (FileNotFoundException e) {
+			
+			File file2 = new File(basePath + fileName);
+			fis = new FileOutputStream(file2);
+			ObjectOutputStream out = new ObjectOutputStream(fis);
+			return out;
+		}
 	}
 }
