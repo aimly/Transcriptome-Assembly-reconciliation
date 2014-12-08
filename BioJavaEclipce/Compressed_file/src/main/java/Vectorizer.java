@@ -43,7 +43,7 @@ public class Vectorizer {
 			
 			NGramTokenizer gramTokenizer = 
 					new NGramTokenizer(new StringReader(index.getData()), 
-							1, 4);
+							1, 3);
 			CharTermAttribute charTermAttribute = 
 					gramTokenizer.addAttribute(CharTermAttribute.class);
 			
@@ -68,7 +68,7 @@ public class Vectorizer {
 		HashMap<String, Integer> vect = this.copyOfVector();
 		
 		NGramTokenizer gramTokenizer = 
-				new NGramTokenizer(new StringReader(str), 1, 4);
+				new NGramTokenizer(new StringReader(str), 1, 3);
 		CharTermAttribute charTermAttribute = 
 				gramTokenizer.addAttribute(CharTermAttribute.class);
 		

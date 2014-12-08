@@ -10,10 +10,11 @@ public class MLRefiner {
 			TranscriptomeAssembly tr1,
 			WorkWithFiles workWithFiles) throws Exception {
 		
-		classifier = (Classifier) workWithFiles.read(workWithFiles.getClassifierID(), 
+		Classifier cl = (Classifier) workWithFiles.read(workWithFiles.getClassifierID(), 
 				tr1.getNameOfTranscriptome(), null, params.getTB(), 
 				params.getBB(), params.getClassifier(), params.getParamsForClassifier());
-		
+		if (cl == null)
+			cl = classifier;
 		classifier.buildClassifier(dataForClassifier.getData());
 		System.out.println("Classifier bilded");
 		

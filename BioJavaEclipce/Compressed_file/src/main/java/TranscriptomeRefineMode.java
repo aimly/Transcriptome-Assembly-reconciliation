@@ -2,7 +2,7 @@
 public class TranscriptomeRefineMode  implements WorkMode{
 	
 	@Override
-	public Transcriptome work (AssembliesSimilarityRefiner simref,
+	public ReturnOfWorkMode work (AssembliesSimilarityRefiner simref,
 			Classifiers classifiers,
 			Params params,
 			TranscriptomeAssembly tr1,
@@ -31,7 +31,7 @@ public class TranscriptomeRefineMode  implements WorkMode{
 				params.getParamsForClassifier());
 		
 		System.out.println("Size of final transcriptome is " + transcriptome1.getAllSeq().size());
-		return transcriptome1;
+		return new ReturnOfWorkMode(transcriptome1);
 	}
 
 

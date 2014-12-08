@@ -5,7 +5,7 @@ import weka.core.Instances;
 public class ClassifiersBildingMode implements WorkMode {
 
 	@Override
-	public Transcriptome work(AssembliesSimilarityRefiner simref, 
+	public ReturnOfWorkMode work(AssembliesSimilarityRefiner simref, 
 			Classifiers classifiers, 
 			Params params,
 			TranscriptomeAssembly tr1, 
@@ -29,7 +29,7 @@ public class ClassifiersBildingMode implements WorkMode {
 				tr1.getNameOfTranscriptome(), 
 				params);
 		
-		return null;
+		return new ReturnOfWorkMode();
 		
 	}
 	

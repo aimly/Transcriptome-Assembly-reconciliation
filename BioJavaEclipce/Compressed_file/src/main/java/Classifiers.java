@@ -8,6 +8,8 @@ public class Classifiers {
 	public Classifiers (Classifier cl1, Classifier cl2){
 		this.classifierForGoodReads1 = cl1;
 		this.classifierForGoodReads2 = cl2;
+		System.out.println("Classifiers: " + this.classifierForGoodReads1.getClass());
+		System.out.println("Classifiers: " + this.classifierForGoodReads2.getClass());
 	}
 	
 	public Classifier getClassifier1 (){

@@ -8,7 +8,7 @@ import weka.core.Instances;
 public class CrossValidationMode implements WorkMode {
 
 	@Override
-	public Transcriptome work(AssembliesSimilarityRefiner simref, 
+	public ReturnOfWorkMode work(AssembliesSimilarityRefiner simref, 
 			Classifiers classifiers, 
 			Params params,
 			TranscriptomeAssembly tr1, 
@@ -26,7 +26,7 @@ public class CrossValidationMode implements WorkMode {
 				dataForClassifier2.getData(), 
 				params.getFolds());
 		
-		return null;
+		return new ReturnOfWorkMode();
 
 	}
 	

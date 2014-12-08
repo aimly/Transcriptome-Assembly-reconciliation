@@ -142,11 +142,9 @@ public class WorkWithFiles {
 			in = WorkWithFiles.getInputStream(pathToWorkFiles + 
 							goodReadsPath + filename);
 			if (in == null){
-				System.out.println("in is null");
 				return new ReadsForTraining();
 			}
 			else {
-				System.out.println("in is not null");
 				obj = (ReadsForTraining)in.readObject();
 				in.close();
 			}

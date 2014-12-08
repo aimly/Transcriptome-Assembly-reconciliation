@@ -79,6 +79,8 @@ public class TrainingDataGenerator {
         Classifiers classifiers = 
         		ClassCreator.getClassifiers(prms.getClassifier(), 
         				prms.getParamsForClassifier());
+        System.out.println("TrdatGen: " + classifiers.getClassifier1().getClass());
+        System.out.println("TrDatGen: " + classifiers.getClassifier2().getClass());
         AssembliesSimilarityRefiner simref = ClassCreator.getSimilarityRefiner();
         TranscriptSimilarityComputer trSim = ClassCreator.getSimComp();
         TranscriptomeSimilarityComputer transcriptomeSimComp = ClassCreator.getTranscriptomeSim();
@@ -97,7 +99,7 @@ public class TrainingDataGenerator {
         
         PairOfReadsForTraining pair = new PairOfReadsForTraining(reads1, reads2);
         
-        Transcriptome resTranscriptome = WorkClass.work(simref, 
+        ReturnOfWorkMode resTranscriptome = WorkClass.work(simref, 
         		classifiers, 
         		prms, workMode, linksTr1, 
         		linksTr2, pair, asForTr1andTr2,

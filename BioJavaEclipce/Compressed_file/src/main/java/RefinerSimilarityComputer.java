@@ -1,7 +1,7 @@
 
 public class RefinerSimilarityComputer {
 	public static void computeSimilarity(TranscriptomeSimilarityComputer transcriptomeSimComp, 
-			Transcriptome resTranscriptome, 
+			ReturnOfWorkMode resTranscriptome, 
 			Transcriptome ref, 
 			AssembliesSimilarityRefiner asmSimRef,
 			TranscriptSimilarityComputer simComp,
@@ -9,16 +9,20 @@ public class RefinerSimilarityComputer {
 			Assignment asForTr2andRef,
 			WorkWithFiles workWithFiles) throws Exception{
 		
-		TranscriptomeSimilarity simTr1 = new TranscriptomeSimilarity (asForTr1andRef, 
-				transcriptomeSimComp);
-		TranscriptomeSimilarity simTr2 = new TranscriptomeSimilarity(asForTr2andRef, 
-				transcriptomeSimComp);
-		TranscriptomeSimilarity simRef = new TranscriptomeSimilarity(resTranscriptome, 
-				ref, asmSimRef, simComp, 
-				transcriptomeSimComp, workWithFiles);
-		
-		if (ref != null){
-		
+		if (resTranscriptome.getWorkModeName().
+				compareTo(resTranscriptome.
+						getWorkModeWithTranscriptome()) == 0){
+			TranscriptomeSimilarity simTr1 = new TranscriptomeSimilarity (asForTr1andRef, 
+					transcriptomeSimComp);
+			TranscriptomeSimilarity simTr2 = new TranscriptomeSimilarity(asForTr2andRef, 
+					transcriptomeSimComp);
+			TranscriptomeSimilarity simRef = 
+					new TranscriptomeSimilarity(resTranscriptome.getRefinedTranscript(), 
+							ref, asmSimRef, simComp, 
+							transcriptomeSimComp, workWithFiles);
+			
+			
+			
 	        System.out.println("RESULTS");
 	        System.out.println("Oases:");
 	        System.out.println("Accuracy: " 

@@ -1,8 +1,13 @@
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class ReadsForTraining implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Read> readsForClass1;
 	private ArrayList<Read> readsForClass2;
 	
@@ -42,6 +47,8 @@ public class ReadsForTraining implements Serializable{
 	private static ArrayList<Read> mergeSets (ArrayList<Read> set1,
 			ArrayList<Read> set2){
 		ArrayList<Read> res = new ArrayList<Read>();
+		Collections.sort(set1);
+		Collections.sort(set2);
 		while (!set1.isEmpty() && !set2.isEmpty()) {
 			Read rd1 = set1.get(set1.size()-1);
 			Read rd2 = set2.get(set2.size()-1);
@@ -64,6 +71,16 @@ public class ReadsForTraining implements Serializable{
 		if (!set2.isEmpty())
 			res.addAll(set2);
 		return res;
+	}
+
+	public void cut(int maxCountOfSet1) {
+		
+		while (this.readsForClass1.size() > maxCountOfSet1)
+			this.readsForClass1.remove(this.readsForClass1.size() - 1);
+		
+		while (this.readsForClass2.size() > maxCountOfSet1)
+			this.readsForClass2.remove(this.readsForClass2.size() - 1);
+		
 	}
 	
 

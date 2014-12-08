@@ -1,6 +1,6 @@
 
 public interface WorkMode {
-	public Transcriptome work (AssembliesSimilarityRefiner simref,
+	public ReturnOfWorkMode work (AssembliesSimilarityRefiner simref,
 			Classifiers classifiers,
 			Params params,
 			TranscriptomeAssembly tr1,

@@ -15,12 +15,10 @@ public class GoodReadsCreator {
 		ReadsForTraining reads = (ReadsForTraining)workWithFiles.read(workWithFiles.getGoodReadsID(),
 				trAssignment1.getNameOfSet1(), trAssignment2.getNameOfSet1(),
 				params.getTB(), params.getBB(), null, null);
-		
 		ReadsForTraining reads2 = GoodReadsCreator.getSets(trAssignment1, 
 				trAssignment2, tr1, tr2, params);
-		System.out.println("Start merging");
 		reads.merge(reads2);
-		System.out.println("Write to file");
+		reads.cut(params.getMaxCountOfSet1());
 		workWithFiles.writeToFile(workWithFiles.getGoodReadsID(), 
 				reads, 
 				trAssignment1.getNameOfSet1(), 
@@ -72,7 +70,6 @@ public class GoodReadsCreator {
 				setClass2.addAll(set1);
 			if (!set2.isEmpty())
 				setClass2.addAll(set2);
-			
 			reads = new ReadsForTraining(setClass1, setClass2);
 		}
 		return reads;

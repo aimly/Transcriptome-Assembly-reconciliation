@@ -15,7 +15,8 @@ public class DatasetCreator {
 
 	public DatasetCreator(ReadsForTraining sets) throws IOException{
 		
-		ArrayList<Read> set = sets.getReadsForClass1();
+		ArrayList<Read> set = new ArrayList<Read>();
+		set.addAll(sets.getReadsForClass1());
 		set.addAll(sets.getReadsForClass2());
 		vectorizer = new Vectorizer (set);
 	
@@ -27,16 +28,9 @@ public class DatasetCreator {
 			System.out.println("Fail! DatasetCreator isn't initialised");
 			return null;
 		}
-		
-		
 		Instances data1 = this.createInstance(sets.getReadsForClass1(), 0);
 		Instances data2 = this.createInstance(sets.getReadsForClass2(), 1);
-		
-		System.out.println("data1: " + data1.size());
-		System.out.println("data2: " + data2.size());
-		
 		data1.addAll(data2);
-		System.out.println("DataSum: " + data1.size());
 		return data1;
 	}
 	
@@ -59,7 +53,7 @@ public class DatasetCreator {
 		
 		
 		Instances data = new Instances("MyRelation", atts, 0);
-		
+		System.out.println("Set1: " + set.size());
 		for (Read index : set){
 			HashMap<String, Integer> strToHashMap = vectorizer.vectorize(index.getData());
 			data.add(createInstance(strToHashMap, typeOfClass));

@@ -1,6 +1,6 @@
 
 public class WorkClass {
-	public static Transcriptome work(AssembliesSimilarityRefiner simref,
+	public static ReturnOfWorkMode work(AssembliesSimilarityRefiner simref,
 			Classifiers classifiers,
 			Params params,
 			WorkMode workMode,
@@ -11,10 +11,10 @@ public class WorkClass {
 			WorkWithFiles workWithFiles) throws Exception{
 		
 		WorkWithData dataForClassifier1 = new WorkWithData(pair.getReadsForTr1());
-		
-		
 		WorkWithData dataForClassifier2 = new WorkWithData(pair.getReadsForTr2());
-		
+		System.out.println("WorkClass: " + classifiers.getClassifier1().getClass());
+	    System.out.println("WorkClass: " + classifiers.getClassifier2().getClass());
+	        
 		return workMode.work(simref, 
 				classifiers, 
 				params,

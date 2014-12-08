@@ -14,7 +14,8 @@ public class ClassCreator {
 		return workMode;
 	}
 	
-	public static Classifiers getClassifiers (String typeOfClassifier, String options) throws Exception{
+	public static Classifiers getClassifiers (String typeOfClassifier, 
+			String options) throws Exception{
 		Classifiers classifiers = null;
 		Classifier classifier1 = null;
 		Classifier classifier2 = null;
@@ -23,6 +24,7 @@ public class ClassCreator {
 			classifier2 = new RandomForest();
 			((RandomForest) classifier1).setOptions(weka.core.Utils.splitOptions(options));
 			((RandomForest) classifier2).setOptions(weka.core.Utils.splitOptions(options));
+			System.out.println(classifier1.getClass());
 		}
 		if (typeOfClassifier.compareTo("SVM") == 0){
 			classifier1 = new SMO();
