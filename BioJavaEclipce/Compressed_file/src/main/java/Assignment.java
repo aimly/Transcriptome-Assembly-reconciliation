@@ -9,64 +9,25 @@ public class Assignment {
 	private int countOfTranscriptsInSet1, countOfTranscriptsInSet2;
 	private HashMap<TranscriptPair, Double> bestSimilarities;
 	
-	public Assignment(SimilarityMatrix matrix) 
-			throws IOException, ClassNotFoundException{
-		
-		this.bestSimilarities = 
-				AssignmentSolver.solve(matrix);
-		this.nameOfFirstTranscriptome = 
-				matrix.getFirstTranscriptome().getNameOfSet();
-		this.nameOfSecondTranscriptome = 
-				matrix.getSecondTranscriptome().getNameOfSet();
-		this.countOfTranscriptsInSet1 = 
-				matrix.getFirstTranscriptome().getAllSeq().size();
-		this.countOfTranscriptsInSet2 = 
-				matrix.getSecondTranscriptome().getAllSeq().size();
-	}
 	
-	// Fast assigment for results
-	// just for look to aproximate results
-	
-	public Assignment (Transcriptome tr1, 
-			Transcriptome tr2,			
-			Assignment asgn1,
-			Assignment asgn2) throws IOException {
+	public Assignment(Transcriptome tr1, 
+			Transcriptome tr2, 
+			TranscriptSimilarityComputer nw,
+			WorkWithFiles workWithFiles) throws Exception {
+		if (tr1 != null || tr2 != null){
 		
-		this.nameOfFirstTranscriptome = 
-				tr1.getNameOfSet();
-		this.nameOfSecondTranscriptome = 
-				asgn1.nameOfSecondTranscriptome;
-		this.countOfTranscriptsInSet1 = 
-				tr1.getAllSeq().size();
-		this.countOfTranscriptsInSet2 = 
-				asgn1.countOfTranscriptsInSet2;
-		
-		for (String index : tr1.getAllSeq()){
+			SimilarityMatrix matrix = new SimilarityMatrix(tr1, tr2, nw,workWithFiles);
 			
-			if (asgn1.search(index) != null)
-				this.bestSimilarities.put(asgn1.search(index),
-						asgn1.getSim(asgn1.search(index)));
-			
-			else 
-				if (asgn2.search(index) != null)
-					this.bestSimilarities.put(asgn2.search(index),
-							asgn2.getSim(asgn2.search(index)));
-			
-				else {
-					Transcript tr = 
-							new Transcript (tr1.getName(index), index);
-					TranscriptPair pair = new TranscriptPair(tr, null);
-					this.bestSimilarities.put(pair, 0.0);
-				}
-			double sim = (asgn1.search(index) == null) ? 
-						asgn2.getSim(asgn2.search(index)) : 
-						asgn1.getSim(asgn1.search(index));
-			
-			TranscriptPair pair = (asgn1.search(index) == null) ? 
-						asgn2.search(index) : 
-						asgn1.search(index);
-						
-			this.bestSimilarities.put(pair, sim);
+			this.bestSimilarities = 
+					AssignmentSolver.solve(matrix);
+			this.nameOfFirstTranscriptome = 
+					matrix.getFirstTranscriptome().getNameOfSet();
+			this.nameOfSecondTranscriptome = 
+					matrix.getSecondTranscriptome().getNameOfSet();
+			this.countOfTranscriptsInSet1 = 
+					matrix.getFirstTranscriptome().getAllSeq().size();
+			this.countOfTranscriptsInSet2 = 
+					matrix.getSecondTranscriptome().getAllSeq().size();
 		}
 	}
 	
@@ -134,6 +95,58 @@ public class Assignment {
 	
 	// Need to optimize!
 	
+
+	// Fast assigment for results
+	// just for look to aproximate results
+	// Не работает:)
+	
+	/*
+	
+	public Assignment (Transcriptome tr1, 
+			Transcriptome tr2,			
+			Assignment asgn1,
+			Assignment asgn2) throws IOException {
+		
+		this.nameOfFirstTranscriptome = 
+				tr1.getNameOfSet();
+		this.nameOfSecondTranscriptome = 
+				asgn1.nameOfSecondTranscriptome;
+		this.countOfTranscriptsInSet1 = 
+				tr1.getAllSeq().size();
+		this.countOfTranscriptsInSet2 = 
+				asgn1.countOfTranscriptsInSet2;
+		
+		for (String index : tr1.getAllSeq()){
+			
+			if (asgn1.search(index) != null)
+				this.bestSimilarities.put(asgn1.search(index),
+						asgn1.getSim(asgn1.search(index)));
+			
+			else 
+				if (asgn2.search(index) != null)
+					this.bestSimilarities.put(asgn2.search(index),
+							asgn2.getSim(asgn2.search(index)));
+			
+				else {
+					Transcript tr = 
+							new Transcript (tr1.getName(index), index);
+					TranscriptPair pair = new TranscriptPair(tr, null);
+					this.bestSimilarities.put(pair, 0.0);
+				}
+			double sim = (asgn1.search(index) == null) ? 
+						asgn2.getSim(asgn2.search(index)) : 
+						asgn1.getSim(asgn1.search(index));
+			
+			TranscriptPair pair = (asgn1.search(index) == null) ? 
+						asgn2.search(index) : 
+						asgn1.search(index);
+						
+			this.bestSimilarities.put(pair, sim);
+		}
+	}
+
+
+	
 	public TranscriptPair search (String trSeq) throws IOException{
 		for (TranscriptPair index : bestSimilarities.keySet())
 			if (index.getTranscript(0).getData().equals(trSeq) || 
@@ -146,5 +159,7 @@ public class Assignment {
 	public double getSim (TranscriptPair pair){
 		return bestSimilarities.get(pair);
 	}
+	
+	*/
 	
 }

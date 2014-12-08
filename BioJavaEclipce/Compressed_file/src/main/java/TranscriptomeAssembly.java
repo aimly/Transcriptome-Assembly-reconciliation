@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.collect.HashMultimap;
@@ -9,17 +8,19 @@ public class TranscriptomeAssembly {
 	
 	private HashMultimap<Read, Transcript> readsToTranscripts;
 	private HashMultimap<Transcript, Read> transcriptsToReads;
+	private String nameOfTranscriptome;
 	
 	public TranscriptomeAssembly () {
 		
 	}
 	
 	public TranscriptomeAssembly (HashMultimap<Read, Transcript> readsToTranscripts,
-			HashMultimap<Transcript, Read> transcriptsToReads) {
+			HashMultimap<Transcript, Read> transcriptsToReads,
+			String nameOfTranscriptome) {
 		
 		this.readsToTranscripts = readsToTranscripts;
 		this.transcriptsToReads = transcriptsToReads;
-		
+		this.nameOfTranscriptome = nameOfTranscriptome;
 	}
 	
 	public ArrayList<Read> getReads (ArrayList<Transcript> transcripts){
@@ -49,6 +50,10 @@ public class TranscriptomeAssembly {
 	
 	public HashMultimap<Transcript, Read> getMapTrRd () {
 		return this.transcriptsToReads;
+	}
+	
+	public String getNameOfTranscriptome (){
+		return this.nameOfTranscriptome;
 	}
 	
 }

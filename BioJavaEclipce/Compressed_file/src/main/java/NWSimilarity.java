@@ -27,28 +27,30 @@ import org.biojava3.core.sequence.compound.NucleotideCompound;
 
 class NWSimilarity implements TranscriptSimilarityComputer {
 
-	public double[][] computeSimilarity(Transcriptome firstSetOfTr, 
-			Transcriptome secondSetOfTr) throws IOException  {
+	
+	/*
+	SubstitutionMatrix<NucleotideCompound> matrix = 
+			new SimpleSubstitutionMatrix();
+	SubstitutionMatrix<AminoAcidCompound> matrix = 
+			SubstitutionMatrixHelper.getPAM250();
+	 */
+	
+	
+	public double[][] computeSimilarity(Transcriptome firstSet, 
+			Transcriptome secondSet,
+			WorkWithFiles workWithFiles) throws Exception  {
+		/*
 		
 		Transcriptome firstSet, secondSet;
 		firstSet = firstSetOfTr;
 		secondSet = secondSetOfTr;
 		String path = "/home/volta/another/test/All calculated  shit/";
-	/*
-		SubstitutionMatrix<NucleotideCompound> matrix = 
-				new SimpleSubstitutionMatrix();
-		SubstitutionMatrix<AminoAcidCompound> matrix = 
-				SubstitutionMatrixHelper.getPAM250();
-	*/
+
 		
 		SubstitutionMatrix<NucleotideCompound> matrix = 
 				SubstitutionMatrixHelper.getNuc4_4();
 		SimpleGapPenalty gap = new SimpleGapPenalty();
-		
-//		System.out.println(matrix);
-//		System.out.println("ExtPen: " + gap.getExtensionPenalty());
-//		System.out.println("OpenPen: " + gap. getOpenPenalty());
-		
+			
 		double[][] SimilarityMatrix = new double[firstSet.getAllSeq().size()]
 				[secondSet.getAllSeq().size()];
 		
@@ -106,26 +108,10 @@ class NWSimilarity implements TranscriptSimilarityComputer {
 						AmbiguityDNACompoundSet.getDNACompoundSet());
 				
 				
-/*				SequencePair<DNASequence, NucleotideCompound> psa =
-						Alignments.getPairwiseAlignment(query, target,
-								PairwiseSequenceAlignerType.GLOBAL, gap, matrix);*/
 				NeedlemanWunsch aligner = new NeedlemanWunsch(query, target, gap, matrix);
-/*
-				System.out.println("aligner: ");
-				System.out.println("getScore: " + aligner.getScore());
-				System.out.println("getMaxScore: " + aligner.getMaxScore());
-				System.out.println("getMinScore: " + aligner.getMinScore());
-				System.out.println("getDistance: " + aligner.getDistance());
-				System.out.println("getSimilarity: " + aligner.getSimilarity());
-				System.out.println("Sequences is really equivalent: " + str2.equals(str1));
-				System.out.println("");
-*/
+
 				double test_similarity = aligner.getSimilarity();
 				
-				if (test_similarity >= 1.0 || test_similarity <= 0.0) {
-				//	System.out.println("ggg ");
-				//	System.out.println(" ");
-				}
 				SimilarityMatrix[i][j] = test_similarity;
 				if (j%50 == 0)
 					System.out.println("i = " + i + "j = " + j);
@@ -149,6 +135,9 @@ class NWSimilarity implements TranscriptSimilarityComputer {
         		+ " and " + secondSetOfTr.getNameOfSet() + "computed successfully");
 		
 		return SimilarityMatrix;
+		*/
+		return null;
+		
 	}
 
 }

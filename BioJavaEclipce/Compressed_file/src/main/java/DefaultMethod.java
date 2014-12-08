@@ -6,6 +6,9 @@ public class DefaultMethod implements TranscriptomeSimilarityComputer {
 	
 	public double compute(Assignment asm) {
 		
+		if (asm == null){
+			return 0;
+		}
 		HashMap<TranscriptPair, Double> pairs = asm.getMap();
 		
 		double sumAcc = 0;

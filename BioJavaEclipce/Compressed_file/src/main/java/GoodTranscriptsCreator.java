@@ -44,11 +44,7 @@ public class GoodTranscriptsCreator {
 			goodCount += classifier.classifyInstance(ind);
 			count++;
 		}
-		/*
-		System.out.println("Percentage: " + i);
-		System.out.println("count: " + count);
-		System.out.println("goodcount " + goodCount);  
-		*/
+		
 		return ((count - goodCount)/count > percentage);
 	}
 }

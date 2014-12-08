@@ -1,17 +1,16 @@
-import weka.classifiers.Classifier;
 
-
-public class TranscriptomesRefiner  implements WorkMode{
+public class TranscriptomeRefineMode  implements WorkMode{
 	
 	@Override
-	public void work (AssembliesSimilarityRefiner simref,
+	public Transcriptome work (AssembliesSimilarityRefiner simref,
 			Classifiers classifiers,
 			Params params,
 			TranscriptomeAssembly tr1,
 			WorkWithData dataForClassifier1,
 			TranscriptomeAssembly tr2,
 			WorkWithData dataForClassifier2,
-			Assignment asgn) throws Exception {
+			Assignment asgn,
+			WorkWithFiles workWithFiles) throws Exception {
 		
 		Transcriptome transcriptome1 = simref.getSimilarTranscripts(asgn, params);
 		
@@ -24,7 +23,15 @@ public class TranscriptomesRefiner  implements WorkMode{
 		transcriptome21.merge(transcriptome22);
 		
 		transcriptome1.merge(transcriptome21);
+		
+		workWithFiles.writeToFile("RefinedTranscript", 
+				transcriptome1, tr1.getNameOfTranscriptome(), 
+				tr2.getNameOfTranscriptome(), params.getTB(), 
+				params.getBB(), params.getClassifier(), 
+				params.getParamsForClassifier());
+		
 		System.out.println("Size of final transcriptome is " + transcriptome1.getAllSeq().size());
+		return transcriptome1;
 	}
 
 

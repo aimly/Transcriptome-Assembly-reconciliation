@@ -9,7 +9,7 @@ public class ClassCreator {
 	public static WorkMode getWorkMode (String mode){
 		WorkMode workMode = null;
 		if (mode.compareTo("bild") == 0){
-			workMode = new TranscriptomesRefiner();
+			workMode = new TranscriptomeRefineMode();
 		}
 		return workMode;
 	}
@@ -42,5 +42,14 @@ public class ClassCreator {
 	
 	public static AssembliesSimilarityRefiner getSimilarityRefiner (){
 		return new ClassicAssemblerSimilarityRefiner();
+	}
+
+	public static TranscriptSimilarityComputer getSimComp() {
+		return new NWSimilarity();
+	}
+
+	public static TranscriptomeSimilarityComputer getTranscriptomeSim() {
+		
+		return new DefaultMethod();
 	}
 }

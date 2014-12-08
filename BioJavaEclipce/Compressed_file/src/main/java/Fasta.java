@@ -16,14 +16,19 @@ import org.biojava3.core.sequence.io.ProteinSequenceCreator;
 
 public class Fasta {
 
-    public static HashMap<String, String> read (String filename, 
+    public static HashMap<String, String> read (String filePath, 
     		String fileformat, 
     		String typeOfKeys) throws Exception {
         
-
+    	// awry
+    	
+    	if (filePath == null){
+    		return null;
+    	}
+    	
     	HashMap<String, String> set = new HashMap<String, String>();
     	if (fileformat.equals("fasta") || fileformat.equals("fa")) {
-	        FileInputStream inStream = new FileInputStream( filename );
+	        FileInputStream inStream = new FileInputStream( filePath );
 	        FastaReader<ProteinSequence,AminoAcidCompound> fastaReader =
 	                new FastaReader<ProteinSequence,AminoAcidCompound>(
 	                        inStream,
@@ -40,18 +45,13 @@ public class Fasta {
 	        // (все остальное в строке - это просто информация, и на деле 
 	        // так и есть). Посему использована конструкция 
 	        // entry.getValue().getOriginalHeader().split(" ")[0]
-	        int i = 0;
 	        if (typeOfKeys == "sequences"){
 		        for (  Entry<String, ProteinSequence> entry : b.entrySet() ) {
 		        	set.put(entry.getValue().getSequenceAsString(), 
 		        			entry.getValue().getOriginalHeader().split(" ")[0]);
-		        	i++;
-//		        	System.out.println(i);
-//		        	System.out.println(entry.getValue().getSequenceAsString());
-//		        	System.out.println(entry.getValue().getOriginalHeader().split(" ")[0]);
 		        }
 
-		        System.out.println("File " + filename + "parsed successfully");
+		        System.out.println("File " + filePath + "parsed successfully");
 	        }
 	        else if (typeOfKeys == "names")
 	        	for (  Entry<String, ProteinSequence> entry : b.entrySet() ) {
@@ -63,15 +63,15 @@ public class Fasta {
     	else if (fileformat.equals("fastq") || fileformat.equals("fq")) {
     		FastqReader fastqReader = new SangerFastqReader();
     		if (typeOfKeys == "sequences"){
-		        for ( Fastq fastq : fastqReader.read(new File(filename)) ) {
+		        for ( Fastq fastq : fastqReader.read(new File(filePath)) ) {
 		        	set.put(fastq.getSequence(), 
 		        			fastq.getDescription().split(" ")[0]);
 		        	
 		        }
-		        System.out.println("File " + filename + "parsed successfully");
+		        System.out.println("File " + filePath + "parsed successfully");
     		}
     		else if (typeOfKeys == "names")
-    			for ( Fastq fastq : fastqReader.read(new File(filename)) ) {
+    			for ( Fastq fastq : fastqReader.read(new File(filePath)) ) {
 		        	set.put(fastq.getDescription().split(" ")[0], 
 		        			fastq.getSequence());
 		        }
@@ -84,8 +84,9 @@ public class Fasta {
     	
     }
     
-    // Overwriten function "read" (need to fix reading fasta files!)
     
+    // Overwriten function "read" (need to fix reading fasta files!)
+    /*
     protected HashMap<String, String> fastRead (String filename, String fileformat) throws IOException{
     	
     	HashMap<String, String> set = new HashMap<String, String>();
@@ -149,5 +150,5 @@ public class Fasta {
     	reader.close();
     	return set;
     }
-
+    */
 }
