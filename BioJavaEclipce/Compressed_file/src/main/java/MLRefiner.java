@@ -7,10 +7,13 @@ public class MLRefiner {
 	public static Transcriptome createTranscript(Classifier classifier,
 			Params params,
 			WorkWithData dataForClassifier,
-			TranscriptomeAssembly tr1) throws Exception {
+			TranscriptomeAssembly tr1,
+			WorkWithFiles workWithFiles) throws Exception {
 		
-		System.out.println("Bilding classifier");
-		System.out.println("DataSize: " + dataForClassifier.getData().size());
+		classifier = (Classifier) workWithFiles.read(workWithFiles.getClassifierID(), 
+				tr1.getNameOfTranscriptome(), null, params.getTB(), 
+				params.getBB(), params.getClassifier(), params.getParamsForClassifier());
+		
 		classifier.buildClassifier(dataForClassifier.getData());
 		System.out.println("Classifier bilded");
 		

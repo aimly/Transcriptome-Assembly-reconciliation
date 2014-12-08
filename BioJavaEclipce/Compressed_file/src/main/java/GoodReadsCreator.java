@@ -12,7 +12,7 @@ public class GoodReadsCreator {
 			WorkWithFiles workWithFiles) throws Exception, ClassNotFoundException{
 		System.out.println("Start creating good reads for " + trAssignment1.getNameOfSet1()
 				+ " and " + trAssignment2.getNameOfSet2());
-		ReadsForTraining reads = (ReadsForTraining)workWithFiles.read("goodReads",
+		ReadsForTraining reads = (ReadsForTraining)workWithFiles.read(workWithFiles.getGoodReadsID(),
 				trAssignment1.getNameOfSet1(), trAssignment2.getNameOfSet1(),
 				params.getTB(), params.getBB(), null, null);
 		
@@ -21,7 +21,8 @@ public class GoodReadsCreator {
 		System.out.println("Start merging");
 		reads.merge(reads2);
 		System.out.println("Write to file");
-		workWithFiles.writeToFile("goodReads", reads, 
+		workWithFiles.writeToFile(workWithFiles.getGoodReadsID(), 
+				reads, 
 				trAssignment1.getNameOfSet1(), 
 				trAssignment2.getNameOfSet1(), 
 				params.getTB(), 

@@ -13,16 +13,19 @@ public class NWSim implements TranscriptSimilarityComputer {
 	public double[][] computeSimilarity(Transcriptome firstSet, 
 			Transcriptome secondSet,
 			WorkWithFiles workWithFiles) throws Exception {
-		
-		double[][] simMat = (double[][]) workWithFiles.read("simMatrix", firstSet.getNameOfSet(), secondSet.getNameOfSet(), 0, 0, null, null);
-		if (simMat != null)
-			return simMat;
+		System.out.println("Start computing similarity");
+		double[][] SimilarityMatrix = (double[][]) workWithFiles.read(workWithFiles.getSimMatrixID(), 
+				firstSet.getNameOfSet(), secondSet.getNameOfSet(), 0, 0, null, null);
+		if (SimilarityMatrix != null){
+			System.out.println("similarity readed");
+			return SimilarityMatrix;
+		}
 		
 		SubstitutionMatrix<NucleotideCompound> matrix = 
 				SubstitutionMatrixHelper.getNuc4_4();
 		SimpleGapPenalty gap = new SimpleGapPenalty();
 		
-		double[][] SimilarityMatrix = 
+		SimilarityMatrix = 
 				new double[firstSet.getAllSeq().size()]
 						[secondSet.getAllSeq().size()];
 		int i = 0, j = 0;
@@ -42,7 +45,10 @@ public class NWSim implements TranscriptSimilarityComputer {
 			}
 			i++;
 		}
-		workWithFiles.writeToFile("simMatrix", SimilarityMatrix, firstSet.getNameOfSet(), secondSet.getNameOfSet(), 0, 0, null, null);
+		workWithFiles.writeToFile(workWithFiles.getSimMatrixID(), 
+				SimilarityMatrix, firstSet.getNameOfSet(), 
+				secondSet.getNameOfSet(), 0, 0, null, null);
+		System.out.println("Finish computing similarity");
 		return SimilarityMatrix;
 	}
 

@@ -95,6 +95,9 @@ public class WorkWithFiles {
 				tr1Name, tr2Name, topBound, 
 				bottomBound, typeOfClassifier,
 				paramsForClassifier);
+		File f = new File(nameOfFile);
+		if (f.exists())
+			return;
 		if (typeOfObj.compareTo(this.goodReadsID) == 0){
 			out = WorkWithFiles.getOutputStream(pathToWorkFiles, 
 							pathToWorkFiles + goodReadsPath,
@@ -115,8 +118,10 @@ public class WorkWithFiles {
 							pathToWorkFiles + simMatrixPath,
 							nameOfFile);
 		}
-		if (out != null)
+		if (out != null){
 			out.writeObject(obj);
+			out.close();
+		}
 		else
 			System.out.println("Cannot write object " + 
 					typeOfObj + " to file!");
@@ -130,42 +135,52 @@ public class WorkWithFiles {
 		String filename = this.getNameOfFile(typeOfObj, 
 				tr1Name, tr2Name, topBound, bottomBound, 
 				typeOfClassifier, paramsOfClassifier);
-		
+		ObjectInputStream in;
 		Object obj = new Object();
 		
 		if (typeOfObj.compareTo(this.goodReadsID) == 0){
-			ObjectInputStream in = WorkWithFiles.getInputStream(pathToWorkFiles + 
+			in = WorkWithFiles.getInputStream(pathToWorkFiles + 
 							goodReadsPath + filename);
-			if (in == null)
+			if (in == null){
+				System.out.println("in is null");
 				return new ReadsForTraining();
-			else
+			}
+			else {
+				System.out.println("in is not null");
 				obj = (ReadsForTraining)in.readObject();
+				in.close();
+			}
 		}
 		if (typeOfObj.compareTo(this.classifierID) == 0){
-			ObjectInputStream in = WorkWithFiles.getInputStream(pathToWorkFiles + 
+			in = WorkWithFiles.getInputStream(pathToWorkFiles + 
 					classifierPath + filename);
 			if (in == null)
 				return null;
-			else
+			else {
 				obj = (Classifier)in.readObject();
+				in.close();
+			}
 		}
 		if (typeOfObj.compareTo(this.refinedTrID) == 0){
-			ObjectInputStream in = WorkWithFiles.getInputStream(pathToWorkFiles + 
+			in = WorkWithFiles.getInputStream(pathToWorkFiles + 
 					refinedTrPath + filename);
 			if (in == null)
 				return new Transcriptome(this.refinedTrID);
-			else
+			else {
 				obj = (Transcriptome)in.readObject();
+				in.close();
+			}
 		}
-		if (typeOfObj.compareTo(this.refinedTrID) == 0){
-			ObjectInputStream in = WorkWithFiles.getInputStream(pathToWorkFiles + 
-					refinedTrPath + filename);
+		if (typeOfObj.compareTo(this.simMatrixID) == 0){
+			in = WorkWithFiles.getInputStream(pathToWorkFiles + 
+					simMatrixPath + filename);
 			if (in == null)
 				return null;
-			else
+			else{
 				obj = (double[][])in.readObject();
+				in.close();
+			}
 		}
-		
 		return obj;
 	}
 	
@@ -201,7 +216,7 @@ public class WorkWithFiles {
 					" params: " + paramsForClassifier);
 		}
 		if (type.compareTo(simMatrixID) == 0){
-			name = "Similarity matrix";
+			name = "Similarity matrix ";
 			name = name.concat(tr1Name + " and " + tr2Name);
 		}
 		
@@ -232,5 +247,21 @@ public class WorkWithFiles {
 			ObjectOutputStream out = new ObjectOutputStream(fis);
 			return out;
 		}
+	}
+	
+	public String getGoodReadsID(){
+		return this.goodReadsID;
+	}
+	
+	public String getClassifierID(){
+		return this.classifierID;
+	}
+	
+	public String getRefinedTrID(){
+		return this.refinedTrID;
+	}
+	
+	public String getSimMatrixID(){
+		return this.simMatrixID;
 	}
 }

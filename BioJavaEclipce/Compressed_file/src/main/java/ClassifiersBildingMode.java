@@ -41,8 +41,9 @@ public class ClassifiersBildingMode implements WorkMode {
 			Params params) throws Exception{
 		
 		classifier.buildClassifier(data);
-		workWithFiles.writeToFile("Classifier", classifier, 
-				tr1Name, tr2Name, params.getTB(), 
+		workWithFiles.writeToFile(workWithFiles.getClassifierID(), 
+				classifier, tr1Name, tr2Name, 
+				params.getTB(), 
 				params.getBB(), 
 				params.getClassifier(), 
 				params.getParamsForClassifier());

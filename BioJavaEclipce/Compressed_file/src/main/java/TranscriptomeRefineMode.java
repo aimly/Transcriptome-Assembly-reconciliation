@@ -16,15 +16,15 @@ public class TranscriptomeRefineMode  implements WorkMode{
 		
 		Transcriptome transcriptome21 = 
 				MLRefiner.createTranscript(classifiers.getClassifier1(), 
-						params, dataForClassifier1, tr1);
+						params, dataForClassifier1, tr1, workWithFiles);
 		Transcriptome transcriptome22 = 
 				MLRefiner.createTranscript(classifiers.getClassifier2(), 
-						params, dataForClassifier2, tr2);
+						params, dataForClassifier2, tr2, workWithFiles);
 		transcriptome21.merge(transcriptome22);
 		
 		transcriptome1.merge(transcriptome21);
 		
-		workWithFiles.writeToFile("RefinedTranscript", 
+		workWithFiles.writeToFile(workWithFiles.getRefinedTrID(), 
 				transcriptome1, tr1.getNameOfTranscriptome(), 
 				tr2.getNameOfTranscriptome(), params.getTB(), 
 				params.getBB(), params.getClassifier(), 

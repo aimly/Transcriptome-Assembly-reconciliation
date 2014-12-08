@@ -45,7 +45,7 @@ public class ClassCreator {
 	}
 
 	public static TranscriptSimilarityComputer getSimComp() {
-		return new NWSimilarity();
+		return new NWSim();
 	}
 
 	public static TranscriptomeSimilarityComputer getTranscriptomeSim() {

@@ -14,7 +14,7 @@ public class Assignment {
 			Transcriptome tr2, 
 			TranscriptSimilarityComputer nw,
 			WorkWithFiles workWithFiles) throws Exception {
-		if (tr1 != null || tr2 != null){
+		if (tr1 != null && tr2 != null){
 		
 			SimilarityMatrix matrix = new SimilarityMatrix(tr1, tr2, nw,workWithFiles);
 			
