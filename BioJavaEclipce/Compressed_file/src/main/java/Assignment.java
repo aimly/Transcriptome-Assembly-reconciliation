@@ -19,7 +19,7 @@ public class Assignment {
 			SimilarityMatrix matrix = new SimilarityMatrix(tr1, tr2, nw,workWithFiles);
 			
 			this.bestSimilarities = 
-					AssignmentSolver.solve(matrix);
+					AssignmentSolve.solve(matrix);
 			this.nameOfFirstTranscriptome = 
 					matrix.getFirstTranscriptome().getNameOfSet();
 			this.nameOfSecondTranscriptome = 
@@ -31,15 +31,26 @@ public class Assignment {
 		}
 	}
 	
-	public ArrayList<Transcript> getUpper(double topBound) throws IOException{
+	public ArrayList<Transcript> getUpper(double topBound, 
+			String transcriptome) throws IOException{
+		
+		if (!transcriptome.equals(nameOfFirstTranscriptome) 
+				&& !transcriptome.equals(nameOfSecondTranscriptome)){
+			System.out.println("Fail in getUpper method of class Assignment!");
+			return null;
+		}
 		
 		ArrayList<Transcript> listOfUpperTranscripts = new ArrayList<Transcript>();
 		
 		for (TranscriptPair index : bestSimilarities.keySet()){
 			
 			if (bestSimilarities.get(index) > topBound){
-				listOfUpperTranscripts.add(index.getTranscript(0));
-			
+				if (transcriptome.equals(this.nameOfFirstTranscriptome) 
+						&& index.getTranscript1() != null)
+					listOfUpperTranscripts.add(index.getTranscript1());
+				else 
+					if (index.getTranscript2() != null)
+						listOfUpperTranscripts.add(index.getTranscript2());
 			}
 			
 		}
@@ -48,14 +59,20 @@ public class Assignment {
 		
 	}
 	
-	public ArrayList<Transcript> getLower(double bottomBound){
+	public ArrayList<Transcript> getLower(double bottomBound, 
+			String transcriptome){
 		
 		ArrayList<Transcript> listOfLowerTranscripts = new ArrayList<Transcript>();
 		
 		for (TranscriptPair index : bestSimilarities.keySet()){
 			
 			if (bestSimilarities.get(index) < bottomBound)
-				listOfLowerTranscripts.add(index.getTranscript(0));
+				if (transcriptome.equals(this.nameOfFirstTranscriptome) 
+						&& index.getTranscript1() != null)
+					listOfLowerTranscripts.add(index.getTranscript1());
+				else 
+					if (index.getTranscript2() != null)
+						listOfLowerTranscripts.add(index.getTranscript2());
 			
 		}
 		

@@ -8,7 +8,7 @@ public class ClassicAssemblerSimilarityRefiner implements
 	public Transcriptome getSimilarTranscripts(Assignment asgn, Params params) throws IOException {
 		double level = params.getLevel();
 		Transcriptome trSet = new Transcriptome ("ResultsOfAssemblyAnalysis");
-		trSet.addAllTranscript(asgn.getUpper(level));
+		trSet.addAllTranscript(asgn.getUpper(level, asgn.getNameOfSet1()));
 		System.out.println("AssemblerSimilarityRefiner"
 				+ "returned " + trSet.getAllSeq().size() + " transcripts");
 		return trSet;

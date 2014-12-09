@@ -9,15 +9,13 @@ public class TranscriptPair {
 		this.secondTranscript = second;
 	}
 	
-	public Transcript getTranscript (Integer i){
-		if (i == 0)
+	public Transcript getTranscript1 (){
 			return this.firstTranscript;
-		if (i == 1)
-			return this.secondTranscript;
-		
-		System.out.println("Can not perfom. Please, use index 0 or 1");
-		return null;
 	}
+	
+	public Transcript getTranscript2 (){
+		return this.firstTranscript;
+}
 	
 	public void print () {
 		System.out.println("Transcript pair:");

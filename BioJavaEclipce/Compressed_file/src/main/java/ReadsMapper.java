@@ -13,12 +13,8 @@ public class ReadsMapper {
 			String fileOfReads,
 			String fileOfTranscripts) throws Exception {
 		
-		String typeOfReads = fileOfReads.split("\\.")[fileOfReads.split("\\.").length - 1];
-		HashMap<String, String> readsHashOfNames = Fasta.read(fileOfReads, typeOfReads, "names");
-		
-		String typeOfTranscripts = fileOfTranscripts.split("\\.")[fileOfReads.split("\\.").length - 1];
-		HashMap<String, String> transcriptHashOfNames = Fasta.read(fileOfTranscripts, typeOfTranscripts, "names");
-		
+		HashMap<String, String> readsHashOfNames = Fasta.read(fileOfReads, "names");
+		HashMap<String, String> transcriptHashOfNames = Fasta.read(fileOfTranscripts, "names");
 		
 		HashMultimap<Read, Transcript> readsToTranscripts = HashMultimap.create();
 		HashMultimap<Transcript, Read> transcriptsToReads = HashMultimap.create();

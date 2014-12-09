@@ -1,7 +1,9 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,7 +13,17 @@ import weka.classifiers.Classifier;
 
 
 public class WorkWithFiles {
+	
+	/*
+	 * basedir
+	 */
+	
 	private String pathToWorkFiles;
+	
+	/*
+	 * paths to write/read different types of objects
+	 */
+	
 	private final String trPath = "Data"
 			.concat(System.getProperty("file.separator"))
 			.concat("Assemblies")
@@ -45,7 +57,9 @@ public class WorkWithFiles {
 	private final String simMatrixPath = "Assignments"
 			.concat(System.getProperty("file.separator"));
 
-	
+	/*
+	 * initialization of basedir
+	 */
 	
 	public WorkWithFiles (){
 		String[] curDir = new File("").getAbsolutePath().split(System.getProperty("file.separator"));
@@ -80,24 +94,47 @@ public class WorkWithFiles {
 		}
 	}
 	
-	public String getNameOfFile (String fileName){
-		return fileName.split("\\/")[fileName.split(System.getProperty("file.separator")).length - 1].split("\\.")[0];
+	public static String getNameOfFile (String filePath){
+		return filePath.split(System.getProperty("file.separator"))[filePath.split(System.getProperty("file.separator")).length - 1].split("\\.")[0];
 	}
-	
+
+	public static String getFileFormat(String filePath) {
+		return filePath.split("\\.")[filePath.split("\\.").length - 1];
+	}
+	/*
+	 * Writing classifiers, refined transcripts, similarity
+	 * matrixes and good reads to files;
+	 * 
+	 * Input (it is necessary to create name):
+	 * 
+	 * - type of object (one of fields of this class with suffix "ID")
+	 * 
+	 * - object (object which is written)
+	 * 
+	 * - topBound, bottomBound, typeOfClassifier, paramsForClassifier 
+	 * 	 (creating name and path for new file)
+	 * 
+	 * - flag of rewriting (if we obtain results, but file with old 
+	 * 	 results exists, we can rewrite it or not rewrite))
+	 * 
+	 */
 	public void writeToFile(String typeOfObj, 
 			Object obj, String tr1Name, 
 			String tr2Name, double topBound, 
 			double bottomBound,
 			String typeOfClassifier, 
-			String paramsForClassifier) throws Exception{
+			String paramsForClassifier,
+			int flagOfRewriting) throws Exception{
 		ObjectOutputStream out = null;
 		String nameOfFile = this.getNameOfFile(typeOfObj, 
 				tr1Name, tr2Name, topBound, 
 				bottomBound, typeOfClassifier,
 				paramsForClassifier);
 		File f = new File(nameOfFile);
-		if (f.exists())
+		if (f.exists() && flagOfRewriting == 0)
 			return;
+		else
+			this.cleanFile(nameOfFile);
 		if (typeOfObj.compareTo(this.goodReadsID) == 0){
 			out = WorkWithFiles.getOutputStream(pathToWorkFiles, 
 							pathToWorkFiles + goodReadsPath,
@@ -126,7 +163,13 @@ public class WorkWithFiles {
 			System.out.println("Cannot write object " + 
 					typeOfObj + " to file!");
 	}
-
+	/*
+	 * Reading classifiers, refined transcripts, similarity
+	 * matrixes and good reads from files;
+	 * 
+	 * Input : similar to "writeToFile", but without flag of rewriting
+	 * 
+	 */
 	public Object read(String typeOfObj, String tr1Name, 
 			String tr2Name, double topBound, 
 			double bottomBound, String typeOfClassifier,
@@ -190,7 +233,7 @@ public class WorkWithFiles {
 		ObjectInputStream in = new ObjectInputStream(fis);
 		return in;
 	}
-	
+
 	private String getNameOfFile(String type, String tr1Name, 
 			String tr2Name, double topBound, 
 			double bottomBound,
@@ -246,7 +289,17 @@ public class WorkWithFiles {
 			return out;
 		}
 	}
-	
+
+	private void cleanFile(String nameOfFile) throws IOException {
+		FileWriter fstream1 = new FileWriter(nameOfFile);
+		BufferedWriter out1 = new BufferedWriter(fstream1);
+		out1.write("");
+		out1.close(); 
+	}
+	/*
+	 * getters to use it, when we want to write file
+	 * is used like a parameter in write/read method
+	 */
 	public String getGoodReadsID(){
 		return this.goodReadsID;
 	}
@@ -262,4 +315,5 @@ public class WorkWithFiles {
 	public String getSimMatrixID(){
 		return this.simMatrixID;
 	}
+
 }

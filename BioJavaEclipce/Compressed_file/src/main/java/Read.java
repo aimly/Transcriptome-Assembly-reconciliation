@@ -7,6 +7,11 @@ import java.io.IOException;
 
 public class Read extends NucleicSequence {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	// From parent class (because we can't cast classes)
 	public Read(NucleicSequence obj) throws IOException {
 		super (obj);

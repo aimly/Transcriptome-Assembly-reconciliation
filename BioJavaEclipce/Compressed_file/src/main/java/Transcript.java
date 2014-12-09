@@ -8,6 +8,12 @@ public class Transcript extends NucleicSequence {
 
 	// From parent class (because we can't cast classes)
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	public Transcript(NucleicSequence obj) throws IOException {
 		super (obj);
 	}

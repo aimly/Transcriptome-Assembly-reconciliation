@@ -46,7 +46,7 @@ public class ClassifiersBildingMode implements WorkMode {
 				params.getTB(), 
 				params.getBB(), 
 				params.getClassifier(), 
-				params.getParamsForClassifier());
+				params.getParamsForClassifier(), 1);
 	}
 
 }

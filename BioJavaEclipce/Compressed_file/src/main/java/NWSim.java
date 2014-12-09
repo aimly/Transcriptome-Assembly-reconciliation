@@ -47,7 +47,7 @@ public class NWSim implements TranscriptSimilarityComputer {
 		}
 		workWithFiles.writeToFile(workWithFiles.getSimMatrixID(), 
 				SimilarityMatrix, firstSet.getNameOfSet(), 
-				secondSet.getNameOfSet(), 0, 0, null, null);
+				secondSet.getNameOfSet(), 0, 0, null, null, 0);
 		System.out.println("Finish computing similarity");
 		return SimilarityMatrix;
 	}

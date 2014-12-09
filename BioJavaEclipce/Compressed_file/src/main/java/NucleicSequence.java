@@ -9,6 +9,11 @@ import java.io.Serializable;
 
 public class NucleicSequence implements Comparable<NucleicSequence>, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private byte[] data;
 
 	private byte[] name;

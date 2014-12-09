@@ -14,6 +14,10 @@ import java.util.Map;
 public class Transcriptome implements Serializable{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nameOfSet;
 	private HashMap<String,String> transcripts;
     

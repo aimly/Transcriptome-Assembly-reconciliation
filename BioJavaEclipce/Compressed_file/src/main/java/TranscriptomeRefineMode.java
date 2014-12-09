@@ -28,7 +28,7 @@ public class TranscriptomeRefineMode  implements WorkMode{
 				transcriptome1, tr1.getNameOfTranscriptome(), 
 				tr2.getNameOfTranscriptome(), params.getTB(), 
 				params.getBB(), params.getClassifier(), 
-				params.getParamsForClassifier());
+				params.getParamsForClassifier(), 0);
 		
 		System.out.println("Size of final transcriptome is " + transcriptome1.getAllSeq().size());
 		return new ReturnOfWorkMode(transcriptome1);

@@ -16,12 +16,15 @@ import org.biojava3.core.sequence.io.ProteinSequenceCreator;
 
 public class Fasta {
 
-    public static HashMap<String, String> read (String filePath, 
-    		String fileformat, 
+    public static HashMap<String, String> read (String filePath,
     		String typeOfKeys) throws Exception {
         
-    	// awry
-    	
+    	/* 
+    	 * awry
+    	 *  returns hashmap name->seq or seq->name
+    	 *  first need just to create TranscriptomeAssembly
+    	 */ 
+    	String fileformat = WorkWithFiles.getFileFormat(filePath);
     	if (filePath == null){
     		return null;
     	}

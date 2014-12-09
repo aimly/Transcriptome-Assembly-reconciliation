@@ -11,6 +11,12 @@ public class ClassCreator {
 		if (mode.compareTo("bild") == 0){
 			workMode = new TranscriptomeRefineMode();
 		}
+		if (mode.compareTo("CV") == 0){
+			workMode = new CrossValidationMode();
+		}
+		if (mode.compareTo("getClassifiers") == 0){
+			workMode = new ClassifiersBildingMode();
+		}
 		return workMode;
 	}
 	
@@ -53,5 +59,32 @@ public class ClassCreator {
 	public static TranscriptomeSimilarityComputer getTranscriptomeSim() {
 		
 		return new DefaultMethod();
+	}
+
+	public static InputTranscriptomes getSimilarityRefiner(Params prms,
+			WorkWithFiles workWithFiles,
+			TranscriptSimilarityComputer trSim) throws Exception {
+		
+		String fileOfTranscriptome1 = workWithFiles.getPathForFile(prms.getTr1FileName(), "tr");
+    	String fileOfTranscriptome2 = workWithFiles.getPathForFile(prms.getTr2FileName(), "tr");
+		
+		if (prms.getRefFileName() != null){
+			String fileOfRef = workWithFiles.getPathForFile(prms.getRefFileName(), "ref");
+			return new InputTranscriptomesWithRef(fileOfTranscriptome1, 
+					fileOfTranscriptome2, fileOfRef, 
+					trSim, workWithFiles);
+		} else {
+			return new InputTranscriptomesWithoutRef(fileOfTranscriptome1,
+					fileOfTranscriptome2, trSim, workWithFiles);
+		}
+	}
+
+	public static RefSimComp getRefSimComp(Params params) {
+		if (params.getMode().compareTo("bild") == 0 && 
+				params.getRefFileName() != null){
+			return new RefSimCompWithRefBild();
+		}
+		else
+			return new RefSimCompNoneBild();
 	}
 }
