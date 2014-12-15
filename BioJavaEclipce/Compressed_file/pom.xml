@@ -33,6 +33,8 @@
   </repositories>
 
   <dependencies>
+
+   <!--  
 	<dependency>
 		<groupId>org.biojava</groupId>
 		<artifactId>biojava3-core</artifactId>
@@ -43,6 +45,24 @@
 		<artifactId>biojava3-sequencing</artifactId>
 		<version>4.0.0-SNAPSHOT</version>
 	</dependency>
+	
+-->
+	<dependency>
+		<artifactId>org.biojava</artifactId>
+		<groupId>biojava3-alignment</groupId>
+		<version>4.0.0-SNAPSHOT</version>
+		<scope>system</scope>
+		<systemPath>${basedir}/libs/biojava3-core-4.0.0-20140603.153123-1.jar</systemPath>
+	</dependency>
+	
+	<dependency>
+		<artifactId>org.biojava</artifactId>
+		<groupId>biojava3-alignment</groupId>
+		<version>4.0.0-SNAPSHOT</version>
+		<scope>system</scope>
+		<systemPath>${basedir}/libs/biojava3-sequencing-4.0.0-20140603.153853-1.jar</systemPath>
+	</dependency>
+	
 	
 	<dependency>
 		<artifactId>org.biojava</artifactId>
