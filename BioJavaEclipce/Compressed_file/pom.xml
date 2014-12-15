@@ -49,7 +49,7 @@
 -->
 	<dependency>
 		<artifactId>org.biojava</artifactId>
-		<groupId>biojava3-alignment</groupId>
+		<groupId>biojava3-core</groupId>
 		<version>4.0.0-SNAPSHOT</version>
 		<scope>system</scope>
 		<systemPath>${basedir}/libs/biojava3-core-4.0.0-20140603.153123-1.jar</systemPath>
@@ -57,7 +57,7 @@
 	
 	<dependency>
 		<artifactId>org.biojava</artifactId>
-		<groupId>biojava3-alignment</groupId>
+		<groupId>biojava3-sequencing</groupId>
 		<version>4.0.0-SNAPSHOT</version>
 		<scope>system</scope>
 		<systemPath>${basedir}/libs/biojava3-sequencing-4.0.0-20140603.153853-1.jar</systemPath>
@@ -71,6 +71,7 @@
 		<scope>system</scope>
 		<systemPath>${basedir}/libs/biojava3-alignment-4.0.0-SNAPSHOT.jar</systemPath>
 	</dependency>
+	
 	
 	  
 	  <!-- other biojava jars as needed -->
